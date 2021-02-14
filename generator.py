@@ -47,16 +47,14 @@ def scoreGenerator(ncompasses):
                 duration = compass[1]
 
                 while duration>0:
-
                     #generamos la nota o el silencio
-                    simbolo = symbol.generateSymbol(duration, tie, pitch)
-                    #simbolo = [duracion, nota, ligadura, altura]
-                    f1.write(simbolo[1])
+                    simbolo = symbol.generateSymbol(duration, tie, pitch) #->[LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                    f1.write(simbolo[0])
                     f1.write('\n')
 
-                    duration = duration - simbolo[0]
-                    tie = simbolo[2]
-                    pitch = simbolo[3]
+                    duration = duration - simbolo[1]
+                    tie = simbolo[3]
+                    pitch = simbolo[2]
         return 0
     
     except:
