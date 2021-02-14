@@ -59,10 +59,12 @@ def generateSymbol(duration, tie, pitch):
 
     #definimos puntillo
     durpunt = res[1] + res[1]/2
-    if durpunt <= duration:    #el puntillo cabe
+    if durpunt <= duration and res[1] > 0.25:   #si es semicorchea no le ponemos puntillo porque se lia un pitote que todavia no se como solucionar
         puntillo =  random.choices([0,1], weights=(90, 10), k=1)[0]
     else:
         puntillo = 0
+    
+    
 
     #preparamos la salida
     #SALIDA -> res = (LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA)
