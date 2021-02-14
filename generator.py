@@ -1,10 +1,15 @@
 import random
+import symbol
 
-ncompasses = input("Introduce el número de compases... ")  #Numero de compases
-numOfGenerations = input("Introduce el número de partituras... ") #creo que es el numero de partituras jj
+
+nc = input("Introduce el número de compases... ")  #Numero de compases
+numOfGenerations = input("Introduce el número de partituras... ") #numero de partituras
+
+nc = int(nc)
+numOfGenerations= int(numOfGenerations)
 
 clefs = ["clefG2", "clefF4", "clefC3", "clefC1", "clefG1", "clefC2", "clefC4"]
-compasses = ["M4/4", "M3/4", "M2/2", "M2/4", "M6/8", "M12/8", "M9/8", "M5/4"]
+compasses = [("M4/4", 4), ("M3/4", 3), ("M2/2", 4), ("M2/4", 2) , ("M6/8", 3), ("M12/8", 6), ("M9/8", 4.5), ("M5/4", 5)] #métrica de los compases con su duración en negras
 keys = ["cM", "gM", "dM", "lM", "eM", "bM", "cbm", "gbm", "fsm", "dbm", "csm", "lbM", "ebM", "bbM", "fM"]
 
 #funcion principal en la que se recogen los parametros y se generan las partituras
@@ -25,14 +30,35 @@ def scoreGenerator(ncompasses):
 
             #se elige el tipo de compas
             compass = chooseCompass()
-            f1.write(compass)
+            f1.write(compass[0])
             f1.write('\n')
 
-            #numero de compases -> ncompas
-
-            #tipo de funcion para la generacion de la partitura -> tipofunc
-
+            #inicializamos la ligadura y la altura
+            tie = 0
+            pitch = 11 #número entre el 1 y el 22
             #se empiezan a generar compases
+            for i in range(ncompasses):
+                 #indicamos en qué compás estamos
+                f1.write('compas ')
+                f1.write(str(i))
+                f1.write('\n')
+
+                #duración del compás
+                duration = compass[1]
+
+                while duration>0:
+
+                    #generamos la nota o el silencio
+                    simbolo = symbol.generateSymbol(duration, tie, pitch)
+                    #simbolo = [duracion, nota, ligadura, altura]
+                    f1.write(simbolo[1])
+                    f1.write('\n')
+
+                    duration = duration - simbolo[0]
+                    tie = simbolo[2]
+                    pitch = simbolo[3]
+        return 0
+    
     except:
         print('Error')
         raise
@@ -40,12 +66,14 @@ def scoreGenerator(ncompasses):
 #funcion para elegir la clave a utilizar
 def chooseClef():
     #choices para elegir un elemento de la lista clefs -> weigths la probabilidad que tiene cada elemento de ser elegido
-    return random.choices(clefs, weights=(45, 20, 15, 5, 5, 5, 5), k=1)
+    return random.choices(clefs, weights=(45, 20, 15, 5, 5, 5, 5), k=1)[0]
 
 #funcion para elegir el tipo de compas
 def chooseCompass():
-    return random.choices(compasses, weights=(50, 25, 12, 5, 2, 2, 2, 2), k=1)
+    return random.choices(compasses, weights=(50, 25, 12, 5, 2, 2, 2, 2), k=1)[0]
     
 #funcion para elegir la tonalidad
 def chooseKey():
-    return random.choices(keys, weights=(42, 10, 8, 6, 4, 1, 1, 1, 1, 1, 1, 4, 6, 8, 10), k=1)
+    return random.choices(keys, weights=(42, 10, 8, 6, 4, 1, 1, 1, 1, 1, 1, 4, 6, 8, 10), k=1)[0]
+
+scoreGenerator(nc)
