@@ -1,13 +1,13 @@
 import random
 
-def generateSymbol(duration, tie, pitch):
+def generateSymbol(duration, tie, pitch, lastcompass):
     #SALIDA -> res = (LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA)
     res = []
     duraciones = [(4, 2, 1, 0.5, 0.25), []]
     alturas = list(range(1,23)) #del 1 al 22
 
     #si hay una ligadura, el simbolo será seguro una nota
-    if tie == 1:
+    if tie == 2:
         pesos = [100, 0]
     else:
         pesos = [90, 10]
@@ -28,7 +28,6 @@ def generateSymbol(duration, tie, pitch):
             break    
 
     #definimos la duración
-    print(duraciones)
     res.append(random.choices(duraciones[0], weights=(duraciones[1]), k=1)[0])
 
     #definimos la altura
@@ -49,11 +48,13 @@ def generateSymbol(duration, tie, pitch):
     ##############
     '''
 
-    #definimos ligadura
-    if res[0] == 'n' and tie == 0: #es una nota y NO hay ligadura empezada
+    #definimos ligadura -> 0 no hay ligadura, 1 se abre ligadura, 2 hay ligadura abierta, 3 se cierra ligadura
+    if res[0] == 'n' and tie == 0 and lastcompass==False: #es una nota y NO hay ligadura empezada y no estamos en el último compass
         res.append(random.choices([0,1], weights=(90, 10), k=1)[0])
+    elif res[0] == 'n' and tie != 0 and lastcompass==True: #si estamos en el último compás y hay una ligadura abierta se cierra automáticamente
+        res.append(3)
     elif res[0] == 'n' and tie != 0: #es una nota y SI hay ligadura empezada
-        res.append(random.choices([2,0], weights=(80, 20), k=1)[0])
+        res.append(random.choices([3,2], weights=(80, 20), k=1)[0])
     else:
         res.append(0)
 
@@ -74,7 +75,8 @@ def generateSymbol(duration, tie, pitch):
         res[1] = durpunt #si hay puntillo actualizamos la duración total
     if res[3] == 1:
         res[0] += ' ('
-    if res[3] == 2:
+        res[3] = 2 #indica que hay una ligadura empezada
+    if res[3] == 3:
         res[0] += ' )'
         res[3] = 0 #si se acaba la ligadura la reiniciamos
 
