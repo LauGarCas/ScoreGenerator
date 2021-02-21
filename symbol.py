@@ -1,10 +1,12 @@
 import random
+import dictionary
 
-def generateSymbol(duration, tie, pitch, lastcompass):
+def generateSymbol(clef, key, duration, tie, pitch, lastcompass):
     #SALIDA -> res = (LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA)
     res = []
     duraciones = [(4, 2, 1, 0.5, 0.25), []]
-    alturas = list(range(1,23)) #del 1 al 22
+    alteracion = False
+    #alturas = list(range(1,23)) #del 1 al 22
 
     #si hay una ligadura, el simbolo será seguro una nota
     if tie == 2:
@@ -31,23 +33,19 @@ def generateSymbol(duration, tie, pitch, lastcompass):
     res.append(random.choices(duraciones[0], weights=(duraciones[1]), k=1)[0])
 
     #definimos la altura
-    '''
-    ##############
-    IMPLEMENTAR EL ALGORITMO
-    ##############
-    '''
     if res[0] == 'n': #si es una nota
-        res.append(random.choice(alturas))
+        nota = randomWalk(pitch)
+        res.append(nota)
     else:
-        res.append("")
+        res.append(pitch)
 
     #definimos alteracion
-    '''
-    ##############
-    QUEDA POR HACER
-    ##############
-    '''
-
+    if res[0] == 'n':
+        notaAbs = dictionary.pitches[clef][nota - 1]
+        alteraciones = dictionary.accidentals[key]
+        if notaAbs in alteraciones[1]:
+            alteracion = True
+    
     #definimos ligadura -> 0 no hay ligadura, 1 se abre ligadura, 2 hay ligadura abierta, 3 se cierra ligadura
     if res[0] == 'n' and tie == 0 and lastcompass==False: #es una nota y NO hay ligadura empezada y no estamos en el último compass
         res.append(random.choices([0,1], weights=(90, 10), k=1)[0])
@@ -69,7 +67,13 @@ def generateSymbol(duration, tie, pitch, lastcompass):
 
     #preparamos la salida
     #SALIDA -> res = (LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA)
-    res[0] = str(res[0]) + ' ' + str(res[1]) + ' ' + str(res[2]) + ' '
+    if res[0] == 'n': #si es una nota lleva altura
+        res[0] = str(res[0]) + ' ' + str(res[1]) + ' ' + str(res[2]) + ' '
+        if alteracion:
+            res[0] += str(alteraciones[0])+ ' '
+    else:   #si es un silencio no lleva altura
+        res[0] = str(res[0]) + ' ' + str(res[1]) + ' ' 
+    
     if puntillo == 1:
         res[0] += '.'
         res[1] = durpunt #si hay puntillo actualizamos la duración total
@@ -81,3 +85,25 @@ def generateSymbol(duration, tie, pitch, lastcompass):
         res[3] = 0 #si se acaba la ligadura la reiniciamos
 
     return res
+
+#metodo de composicion algoritmica randomwalk
+def randomWalk(prevpitch):
+    paso = random.choice([0, 1, 2]) #el 0 resta 1, el 1 lo deja como esta y el 2 le suma 1
+    limite = random.choice([0, 1]) #0 limite absorbente, 1 limite reflectivo
+
+    if paso == 0:
+        pitch = int(prevpitch) - 1
+        if pitch<1 and limite==0:
+            pitch = 0
+        if pitch<1 and limite==1:
+            pitch += 2
+    elif paso == 1:
+        pitch = int(prevpitch)
+    else:
+        pitch = int(prevpitch) + 1
+        if pitch>22 and limite==0:
+            pitch = 22
+        if pitch>22 and limite==1:
+            pitch -=2
+
+    return pitch

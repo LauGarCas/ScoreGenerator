@@ -1,5 +1,6 @@
 import random
 import symbol
+import dictionary
 
 
 nc = input("Introduce el número de compases... ")  #Numero de compases
@@ -7,10 +8,6 @@ numScores = input("Introduce el número de partituras... ") #numero de partitura
 
 nc = int(nc)
 numScores= int(numScores)
-
-clefs = ["clefG2", "clefF4", "clefC3", "clefC1", "clefG1", "clefC2", "clefC4"]
-compasses = [("M4/4", 4), ("M3/4", 3), ("M2/2", 4), ("M2/4", 2) , ("M6/8", 3), ("M12/8", 6), ("M9/8", 4.5), ("M5/4", 5)] #métrica de los compases con su duración en negras
-keys = ["cM", "gM", "dM", "lM", "eM", "bM", "cbm", "gbm", "fsm", "dbm", "csm", "lbM", "ebM", "bbM", "fM"]
 
 #funcion principal en la que se recogen los parametros y se generan las partituras
 def scoreGenerator(ncompasses, nscores):
@@ -29,6 +26,7 @@ def scoreGenerator(ncompasses, nscores):
                 key = chooseKey()
                 f1.write(key)
                 f1.write('\n')
+                
 
                 #se elige el tipo de compas
                 compass = chooseCompass()
@@ -53,7 +51,7 @@ def scoreGenerator(ncompasses, nscores):
 
                     while duration>0:
                         #generamos la nota o el silencio
-                        simbolo = symbol.generateSymbol(duration, tie, pitch, lastcompass) #->[LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                        simbolo = symbol.generateSymbol(clef, key, duration, tie, pitch, lastcompass) #->[LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
                         f1.write(simbolo[0])
                         f1.write('\n')
 
@@ -68,15 +66,14 @@ def scoreGenerator(ncompasses, nscores):
 #funcion para elegir la clave a utilizar
 def chooseClef():
     #choices para elegir un elemento de la lista clefs -> weigths la probabilidad que tiene cada elemento de ser elegido
-    return random.choices(clefs, weights=(45, 20, 15, 5, 5, 5, 5), k=1)[0]
+    return random.choices(dictionary.clefs, weights=(45, 20, 15, 5, 5, 5, 5), k=1)[0]
 
 #funcion para elegir el tipo de compas
 def chooseCompass():
-    return random.choices(compasses, weights=(50, 25, 12, 5, 2, 2, 2, 2), k=1)[0]
+    return random.choices(dictionary.compasses, weights=(50, 25, 12, 5, 2, 2, 2, 2), k=1)[0]
     
 #funcion para elegir la tonalidad
 def chooseKey():
-    return random.choices(keys, weights=(42, 10, 8, 6, 4, 1, 1, 1, 1, 1, 1, 4, 6, 8, 10), k=1)[0]
-
+    return random.choices(dictionary.keys, weights=(42, 10, 8, 6, 4, 1, 1, 1, 1, 1, 1, 4, 6, 8, 10), k=1)[0]
 
 scoreGenerator(nc, numScores)
