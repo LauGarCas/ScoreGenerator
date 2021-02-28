@@ -1,6 +1,7 @@
 import random
 import symbol
 import dictionary
+import kerntrasnlate as kern
 
 
 nc = input("Introduce el número de compases... ")  #Numero de compases
@@ -18,21 +19,32 @@ def scoreGenerator(ncompasses, nscores):
             #creamos los archivos
             with open(nombrearchivo, "w") as f1, open(nombrearchivokern, "w") as f2:
 
+                #inicializar los archivos
+                f2.write('**kern\n')
+
                 #se decide el tipo de clave a utilizar
                 clef = chooseClef()
                 f1.write(clef)
                 f1.write('\n')
 
+                f2.write(kern.clefs[clef])
+                f2.write('\n')
+                
                 #se elige la tonalidad
                 key = chooseKey()
                 f1.write(key)
                 f1.write('\n')
-                
 
+                f2.write(kern.accidentals[key])
+                f2.write('\n')
+                
                 #se elige el tipo de compas
                 compass = chooseCompass()
                 f1.write(compass[0])
                 f1.write('\n')
+
+                f2.write(kern.compasses[compass[0]])
+                f2.write('\n')
 
                 #inicializamos la ligadura y la altura
                 tie = 0
@@ -47,6 +59,9 @@ def scoreGenerator(ncompasses, nscores):
                     f1.write(str(i))
                     f1.write('\n')
 
+                    f2.write(kern.compas(i))
+                    f2.write('\n')                    
+
                     #duración del compás
                     duration = compass[1]
 
@@ -56,9 +71,15 @@ def scoreGenerator(ncompasses, nscores):
                         f1.write(simbolo[0])
                         f1.write('\n')
 
+                        f2.write(kern .simbolo(simbolo[0], clef))
+                        f2.write('\n')
+
                         duration = duration - simbolo[1]
                         tie = simbolo[3]
                         pitch = simbolo[2]
+                
+                #fin de los archivos
+                f2.write('*-')
     
     except:
         print('Error')
