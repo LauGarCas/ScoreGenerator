@@ -14,8 +14,9 @@ def scoreGenerator(ncompasses, nscores):
     try:
         for j in range(nscores):
             nombrearchivo = 'salida' + str(j) +'.txt'
+            nombrearchivokern = 'k' + str(j) +'.kern'
             #creamos los archivos
-            with open(nombrearchivo, "w") as f1:
+            with open(nombrearchivo, "w") as f1, open(nombrearchivokern, "w") as f2:
 
                 #se decide el tipo de clave a utilizar
                 clef = chooseClef()
@@ -51,7 +52,7 @@ def scoreGenerator(ncompasses, nscores):
 
                     while duration>0:
                         #generamos la nota o el silencio
-                        simbolo = symbol.generateSymbol(clef, key, duration, tie, pitch, lastcompass) #->[LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                        simbolo = symbol.generateSymbol(clef, key, duration, tie, pitch, lastcompass) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
                         f1.write(simbolo[0])
                         f1.write('\n')
 

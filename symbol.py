@@ -5,8 +5,7 @@ def generateSymbol(clef, key, duration, tie, pitch, lastcompass):
     #SALIDA -> res = (LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA)
     res = []
     duraciones = [(4, 2, 1, 0.5, 0.25), []]
-    alteracion = False
-    #alturas = list(range(1,23)) #del 1 al 22
+    alteracion = '' # b -> bemol, # -> sostenido,  n -> becuadro
 
     #si hay una ligadura, el simbolo será seguro una nota
     if tie == 2:
@@ -40,11 +39,15 @@ def generateSymbol(clef, key, duration, tie, pitch, lastcompass):
         res.append(pitch)
 
     #definimos alteracion
-    if res[0] == 'n':
+    esalterada =  random.choices([0,1], weights=(90, 10), k=1)[0]   # 0 -> no alteración, 1 -> si alteración
+    if esalterada == 1 and res[0] == 'n':
         notaAbs = dictionary.pitches[clef][nota - 1]
         alteraciones = dictionary.accidentals[key]
+        #si la nota esta alterada por la ronalidad elegida solo podrá llevar un becuadro
         if notaAbs in alteraciones[1]:
-            alteracion = True
+            alteracion = random.choice(['n', alteraciones[0]])
+        else:
+            alteracion = random.choice(['#', 'b'])
     
     #definimos ligadura -> 0 no hay ligadura, 1 se abre ligadura, 2 hay ligadura abierta, 3 se cierra ligadura
     if res[0] == 'n' and tie == 0 and lastcompass==False: #es una nota y NO hay ligadura empezada y no estamos en el último compass
@@ -63,16 +66,12 @@ def generateSymbol(clef, key, duration, tie, pitch, lastcompass):
     else:
         puntillo = 0
     
-    
-
     #preparamos la salida
     #SALIDA -> res = (LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA)
     if res[0] == 'n': #si es una nota lleva altura
-        res[0] = str(res[0]) + ' ' + str(res[1]) + ' ' + str(res[2]) + ' '
-        if alteracion:
-            res[0] += str(alteraciones[0])+ ' '
+        res[0] = str(res[0]) + ' ' + str(res[1]) + ' ' + str(res[2]) + ' ' + alteracion
     else:   #si es un silencio no lleva altura
-        res[0] = str(res[0]) + ' ' + str(res[1]) + ' ' 
+        res[0] = str(res[0]) + ' ' + str(res[1]) 
     
     if puntillo == 1:
         res[0] += '.'
