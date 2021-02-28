@@ -1,0 +1,46 @@
+clefC3
+aM
+M2/2
+compas 0
+n 2 12 
+n 2 11 #
+compas 1
+n 0.25 11 
+n 2 10 
+n 0.25 10 
+n 0.25 11 
+n 0.25 10 
+n 1 10 
+compas 2
+n 2 9 -
+n 0.5 10 
+n 0.5 9 #.
+n 0.25 10 
+r 0.25 
+n 0.25 10 
+compas 3
+n 1 11 
+n 0.5 12 
+n 0.5 12 -
+r 0.25 
+n 0.25 11 
+n 1 11 .
+compas 4
+n 0.5 12 
+n 2 11 
+n 1 12 
+n 0.5 12  (
+compas 5
+n 4 11 
+compas 6
+n 2 10 -
+n 1 9 . )
+n 0.5 8 
+compas 7
+n 4 8 
+compas 8
+n 1 8 
+n 1 7 
+n 2 6 
+compas 9
+n 4 6 

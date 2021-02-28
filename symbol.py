@@ -45,9 +45,9 @@ def generateSymbol(clef, key, duration, tie, pitch, lastcompass):
         alteraciones = dictionary.accidentals[key]
         #si la nota esta alterada por la ronalidad elegida solo podrá llevar un becuadro
         if notaAbs in alteraciones[1]:
-            alteracion = random.choice(['n', alteraciones[0]])
+            alteracion = random.choice(['+', alteraciones[0]])
         else:
-            alteracion = random.choice(['#', 'b'])
+            alteracion = random.choice(['#', '-'])
     
     #definimos ligadura -> 0 no hay ligadura, 1 se abre ligadura, 2 hay ligadura abierta, 3 se cierra ligadura
     if res[0] == 'n' and tie == 0 and lastcompass==False: #es una nota y NO hay ligadura empezada y no estamos en el último compass
@@ -71,7 +71,7 @@ def generateSymbol(clef, key, duration, tie, pitch, lastcompass):
     if res[0] == 'n': #si es una nota lleva altura
         res[0] = str(res[0]) + ' ' + str(res[1]) + ' ' + str(res[2]) + ' ' + alteracion
     else:   #si es un silencio no lleva altura
-        res[0] = str(res[0]) + ' ' + str(res[1]) 
+        res[0] = str(res[0]) + ' ' + str(res[1]) + ' ' 
     
     if puntillo == 1:
         res[0] += '.'

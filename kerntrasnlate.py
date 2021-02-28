@@ -92,9 +92,13 @@ def simbolo(linea, clef):
     #primero escribimos la duración
     res = durations[x[1]]
 
+    #si hay puntillo lo escribimos
+    if '.' in x:
+        res+= '.'
+
+    #traducimos la altura de la nota o el silencio
     if x[0] == 'n':
         notaAbs = dictionary.pitches[clef][int(x[2])-1]
-        #notaAbs = notaAbs.split()
         if int(notaAbs[1]) < 4:
             for i in range(4 - int(notaAbs[1])):
                 res += notaAbs[0]
@@ -106,4 +110,18 @@ def simbolo(linea, clef):
     if x[0] == 'r':
         res += 'r'
 
+    #si hay alguna alteracion la añadimos
+    if '#' in x:
+        res+= '#'
+    if '-' in x:
+        res+= '-'
+    if '+' in x:
+        res+= 'n'
+
+    #si hay ligadura la añadimos
+    if '(' in x:
+        res = '(' + res
+
+    if ')' in x:
+        res+= ')'
     return res

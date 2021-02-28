@@ -1,4 +1,5 @@
 import random
+import os
 import symbol
 import dictionary
 import kerntrasnlate as kern
@@ -14,10 +15,13 @@ numScores= int(numScores)
 def scoreGenerator(ncompasses, nscores):
     try:
         for j in range(nscores):
+            path = 'salida'+str(j)
+            if not os.path.exists(path):
+                os.makedirs(path)
             nombrearchivo = 'salida' + str(j) +'.txt'
             nombrearchivokern = 'k' + str(j) +'.kern'
             #creamos los archivos
-            with open(nombrearchivo, "w") as f1, open(nombrearchivokern, "w") as f2:
+            with open(os.path.join(path, nombrearchivo), "w") as f1, open(os.path.join(path, nombrearchivokern), "w") as f2:
 
                 #inicializar los archivos
                 f2.write('**kern\n')
@@ -79,6 +83,9 @@ def scoreGenerator(ncompasses, nscores):
                         pitch = simbolo[2]
                 
                 #fin de los archivos
+                f2.write('=')
+                f2.write(str(ncompasses+1))
+                f2.write('\n')                    
                 f2.write('*-')
     
     except:
