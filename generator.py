@@ -3,6 +3,7 @@ import os
 import symbol
 import dictionary
 import kerntranslate as kern
+import agnostictranslate as agnostic
 
 nc = input("Introduce el número de compases... ")  #Numero de compases
 numScores = input("Introduce el número de partituras... ") #numero de partituras
@@ -19,8 +20,10 @@ def scoreGenerator(ncompasses, nscores):
                 os.makedirs(path)
             nombrearchivo = 'salida' + str(j) +'.txt'
             nombrearchivokern = 'k' + str(j) +'.kern'
+            nombrearchivoagnostic = 'a' + str(j) +'.txt'
+
             #creamos los archivos
-            with open(os.path.join(path, nombrearchivo), "w") as f1, open(os.path.join(path, nombrearchivokern), "w") as f2:
+            with open(os.path.join(path, nombrearchivo), "w") as f1, open(os.path.join(path, nombrearchivokern), "w") as f2, open(os.path.join(path, nombrearchivoagnostic), "w") as f3:
 
                 #inicializar los archivos
                 f2.write('**kern\n')
@@ -32,7 +35,12 @@ def scoreGenerator(ncompasses, nscores):
 
                 f2.write(kern.clefs[clef])
                 f2.write('\n')
-                
+
+                f3.write(agnostic.clefs[clef])
+                f3.write(agnostic.not_advance)
+                f3.write(agnostic.advance)
+                f3.write(agnostic.not_advance)
+
                 #se elige la tonalidad
                 key = chooseKey()
                 f1.write(key)
@@ -49,6 +57,9 @@ def scoreGenerator(ncompasses, nscores):
                 f2.write(kern.compasses[compass[0]])
                 f2.write('\n')
 
+                f3.write(agnostic.compasses[compass[0]])
+                f3.write(agnostic.not_advance)
+
                 #inicializamos la ligadura y la altura
                 tie = 0
                 pitch = 11 #número entre el 1 y el 22
@@ -63,7 +74,9 @@ def scoreGenerator(ncompasses, nscores):
                     f1.write('\n')
 
                     f2.write(kern.compas(i))
-                    f2.write('\n')                    
+                    f2.write('\n') 
+
+                    f3.write(agnostic.compas(i))
 
                     #duración del compás
                     duration = compass[1]
@@ -76,6 +89,11 @@ def scoreGenerator(ncompasses, nscores):
 
                         f2.write(kern.simbolo(simbolo[0], clef, key))
                         f2.write('\n')
+
+                        f3.write(agnostic.not_advance)
+                        f3.write(agnostic.advance)
+                        f3.write(agnostic.not_advance)
+                        f3.write(agnostic.simbolo(simbolo[0], clef))
 
                         duration = duration - simbolo[1]
                         tie = simbolo[3]
