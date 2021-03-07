@@ -43,11 +43,26 @@ def generateSymbol(clef, key, duration, tie, pitch, lastcompass):
     if esalterada == 1 and res[0] == 'n':
         notaAbs = dictionary.pitches[clef][nota - 1]
         alteraciones = dictionary.accidentals[key]
-        #si la nota esta alterada por la ronalidad elegida solo podrá llevar un becuadro
-        if notaAbs in alteraciones[1]:
-            alteracion = random.choice(['+', alteraciones[0]])
+
+        #La nota ya ha sido alterada previamente en el compás solo podremos cambiar esta alteración por una de las otras dos
+        if notaAbs in dictionary.compass_accidentals:
+            #vemos con que estaba alterada
+            if dictionary.compass_accidentals[notaAbs] == '#':
+                alteracion = random.choice(['+', '-'])
+            if dictionary.compass_accidentals[notaAbs] == '-':
+                alteracion = random.choice(['#', '+'])
+            if dictionary.compass_accidentals[notaAbs] == '+':
+                alteracion = random.choice(['#', '-'])
+        
+        #si no ha sido alterada todavia
         else:
-            alteracion = random.choice(['#', '-'])
+            #si la nota aparece alterada en la tonalidad solo podemos cambiar la alteración por una de las otras dos
+            if notaAbs[0] in alteraciones[1]:
+                alteracion = random.choice(['+', alteraciones[2]])
+            else:
+                alteracion = random.choice(['#', '-'])
+
+        dictionary.compass_accidentals[notaAbs] = alteracion
     
     #definimos ligadura -> 0 no hay ligadura, 1 se abre ligadura, 2 hay ligadura abierta, 3 se cierra ligadura
     if res[0] == 'n' and tie == 0 and lastcompass==False: #es una nota y NO hay ligadura empezada y no estamos en el último compass
@@ -67,7 +82,7 @@ def generateSymbol(clef, key, duration, tie, pitch, lastcompass):
         puntillo = 0
     
     #preparamos la salida
-    #SALIDA -> res = (LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA)
+    #SALIDA -> res = (LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA, NOTA+ALTERACION)
     if res[0] == 'n': #si es una nota lleva altura
         res[0] = str(res[0]) + ' ' + str(res[1]) + ' ' + str(res[2]) + ' ' + alteracion
     else:   #si es un silencio no lleva altura

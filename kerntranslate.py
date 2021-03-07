@@ -29,13 +29,13 @@ accidentals = {
     "bM": "*k[f#c#g#d#a#]",
     "fs": "*k[f#c#g#d#a#e#]",
     "cs": "*k[f#c#g#d#a#e#b#]",
-    "cbM": "*k[b-]",
-    "gbM": "*k[b-e-]",
-    "dbM": "*k[b-e-a-]",
+    "fM": "*k[b-]",
+    "bbM": "*k[b-e-]",
+    "ebM": "*k[b-e-a-]",
     "abM": "*k[b-e-a-d-]",
-    "ebM": "*k[b-e-a-d-g-]",
-    "bbM": "*k[b-e-a-d-g-c-]",
-    "fM": "*k[b-e-a-d-g-c-f-]"
+    "dbM": "*k[b-e-a-d-g-]",
+    "gbM": "*k[b-e-a-d-g-c-]",
+    "cbM": "*k[b-e-a-d-g-c-f-]"
 }
 
 '''
@@ -69,24 +69,13 @@ durations = {
     "0.25": "16"
 }
 
-'''
-###############
-NOTAS
-###############
-'''
-
-notes = {
-
-}
-
-
 def compas(n):
     if n == 0:
         return '=1-'
     else:
         return '=' + str(n+1)
 
-def simbolo(linea, clef):
+def simbolo(linea, clef, key):
     x = linea.split(" ")
 
     #primero escribimos la duración
@@ -106,22 +95,40 @@ def simbolo(linea, clef):
             nota = notaAbs[0].lower()
             for i in range(int(notaAbs[1])-4 + 1):
                 res += nota
-        
+
+        #si hay alguna alteracion la añadimos
+        #en kern las alteraciones se escriben segun se tocan no segun se escriben en la partitura
+        if '#' in x:
+            res+= '#'
+        elif '-' in x:
+            res+= '-'
+        elif '+' in x:
+            res+= 'n'
+        else:
+            notaAbs = dictionary.pitches[clef][int(x[2])-1]
+            alteraciones = dictionary.accidentals[key]
+            if notaAbs in dictionary.compass_accidentals:
+                if dictionary.compass_accidentals[notaAbs] == '#':
+                    res+= '#'
+                if dictionary.compass_accidentals[notaAbs] == '-':
+                    res+= '-'
+                if dictionary.compass_accidentals[notaAbs] == '+':
+                    res+= 'n'
+            elif notaAbs[0] in alteraciones[1]:
+                if alteraciones[0] == '#':
+                    res+= '#'
+                if alteraciones[0] == '-':
+                    res+= '-'
+                if alteraciones[0] == '+':
+                    res+= 'n'
+
+        #si hay ligadura la añadimos
+        if '(' in x:
+            res = '(' + res
+
+        if ')' in x:
+            res+= ')'
+    
     if x[0] == 'r':
         res += 'r'
-
-    #si hay alguna alteracion la añadimos
-    if '#' in x:
-        res+= '#'
-    if '-' in x:
-        res+= '-'
-    if '+' in x:
-        res+= 'n'
-
-    #si hay ligadura la añadimos
-    if '(' in x:
-        res = '(' + res
-
-    if ')' in x:
-        res+= ')'
     return res

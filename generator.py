@@ -2,8 +2,7 @@ import random
 import os
 import symbol
 import dictionary
-import kerntrasnlate as kern
-
+import kerntranslate as kern
 
 nc = input("Introduce el número de compases... ")  #Numero de compases
 numScores = input("Introduce el número de partituras... ") #numero de partituras
@@ -75,18 +74,21 @@ def scoreGenerator(ncompasses, nscores):
                         f1.write(simbolo[0])
                         f1.write('\n')
 
-                        f2.write(kern .simbolo(simbolo[0], clef))
+                        f2.write(kern.simbolo(simbolo[0], clef, key))
                         f2.write('\n')
 
                         duration = duration - simbolo[1]
                         tie = simbolo[3]
                         pitch = simbolo[2]
+                    
+                    #cuando se acaba el compás borramos el diccionario temporal de alteraciones
+                    dictionary.compass_accidentals.clear()
                 
                 #fin de los archivos
                 f2.write('=')
                 f2.write(str(ncompasses+1))
                 f2.write('\n')                    
-                f2.write('*-')
+                f2.write('*_')
     
     except:
         print('Error')
