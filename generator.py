@@ -13,8 +13,8 @@ numScores= int(numScores)
 
 #funcion principal en la que se recogen los parametros y se generan las partituras
 def scoreGenerator(ncompasses, nscores):
-    try:
-        for j in range(nscores):
+    for j in range(nscores):
+        try:
             #creo las carpeta para las salidas
             path = 'salida'+str(j)
             if not os.path.exists(path):
@@ -83,13 +83,15 @@ def scoreGenerator(ncompasses, nscores):
                 
                 #fin de los archivos
                 manager.end(ncompasses+1)
-                
-    except:
-        print('Error')
-        raise
+        except:
+            print('Error')
+            raise
 
-    finally:
-        manager.close()
+        finally:
+            manager.close()
+                
+    
+        
 
 #funcion para elegir la clave a utilizar
 def chooseClef():
