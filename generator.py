@@ -2,7 +2,6 @@ import random
 import os
 import symbol
 import dictionary
-import kerntranslate as kern
 import manager
 
 nc = input("Introduce el número de compases... ")  #Numero de compases
