@@ -3,6 +3,7 @@ import os
 import symbol
 import dictionary
 import kerntranslate as kern
+import manager
 
 nc = input("Introduce el número de compases... ")  #Numero de compases
 numScores = input("Introduce el número de partituras... ") #numero de partituras
@@ -14,69 +15,65 @@ numScores= int(numScores)
 def scoreGenerator(ncompasses, nscores):
     try:
         for j in range(nscores):
+            #creo las carpeta para las salidas
             path = 'salida'+str(j)
             if not os.path.exists(path):
                 os.makedirs(path)
+            #creo los archivos de salida
+            manager.init(j, path)
             nombrearchivo = 'salida' + str(j) +'.txt'
-            nombrearchivokern = 'k' + str(j) +'.kern'
-            #creamos los archivos
-            with open(os.path.join(path, nombrearchivo), "w") as f1, open(os.path.join(path, nombrearchivokern), "w") as f2:
-
-                #inicializar los archivos
-                f2.write('**kern\n')
+            with open(os.path.join(path, nombrearchivo), "w") as f1:
 
                 #se decide el tipo de clave a utilizar
                 clef = chooseClef()
+                manager.clef(clef)
+
                 f1.write(clef)
                 f1.write('\n')
-
-                f2.write(kern.clefs[clef])
-                f2.write('\n')
-                
+                    
                 #se elige la tonalidad
                 key = chooseKey()
+                manager.key(key)
+
                 f1.write(key)
                 f1.write('\n')
 
-                f2.write(kern.accidentals[key])
-                f2.write('\n')
-                
                 #se elige el tipo de compas
                 compass = chooseCompass()
+                manager.metric(compass)
+
                 f1.write(compass[0])
                 f1.write('\n')
 
-                f2.write(kern.compasses[compass[0]])
-                f2.write('\n')
-
                 #inicializamos la ligadura y la altura
                 tie = 0
-                pitch = 11 #número entre el 1 y el 22
+                pitch = 11 #número entre el 1 y el 22 -> lo podría cambiar por un random
                 #se empiezan a generar compases
                 for i in range(ncompasses):
                     lastcompass = False
                     if i == ncompasses - 1:
                         lastcompass = True
+                    
                     #indicamos en qué compás estamos
+                    manager.compas(i)
+
                     f1.write('compas ')
                     f1.write(str(i))
                     f1.write('\n')
-
-                    f2.write(kern.compas(i))
-                    f2.write('\n')                    
-
+                                    
                     #duración del compás
                     duration = compass[1]
 
                     while duration>0:
                         #generamos la nota o el silencio
                         simbolo = symbol.generateSymbol(clef, key, duration, tie, pitch, lastcompass) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+
+                        #Escribimos el simbolo
+                        manager.simbolo(simbolo[0])
+
                         f1.write(simbolo[0])
                         f1.write('\n')
-
-                        f2.write(kern.simbolo(simbolo[0], clef, key))
-                        f2.write('\n')
-
+                        
                         duration = duration - simbolo[1]
                         tie = simbolo[3]
                         pitch = simbolo[2]
@@ -85,14 +82,14 @@ def scoreGenerator(ncompasses, nscores):
                     dictionary.compass_accidentals.clear()
                 
                 #fin de los archivos
-                f2.write('=')
-                f2.write(str(ncompasses+1))
-                f2.write('\n')                    
-                f2.write('*_')
-    
+                manager.end(ncompasses+1)
+                
     except:
         print('Error')
         raise
+
+    finally:
+        manager.close()
 
 #funcion para elegir la clave a utilizar
 def chooseClef():
