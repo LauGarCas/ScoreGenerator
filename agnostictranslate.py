@@ -1,3 +1,5 @@
+import dictionary
+
 '''
 ###############
 SEPARADORES
@@ -37,36 +39,20 @@ clefs = {
 TONALIDADES
 ###############
 '''
-#lo que se escribe, cuantas veces se escribe y el lugar en funcion de la clave, si es sostenido o bemol
-accidentalsdic = {
-    "cM": [],
-    "gM": ['accidental.sharp', 1, 1],
-    "dM": ['accidental.sharp', 2, 1],
-    "aM": ['accidental.sharp', 3, 1],
-    "eM": ['accidental.sharp', 4, 1],
-    "bM": ['accidental.sharp', 5, 1],
-    "fs": ['accidental.sharp', 6, 1],
-    "cs": ['accidental.sharp', 7, 1],
-    "cbM": ['accidental.flat' ,7, 2],
-    "gbM": ['accidental.flat', 6, 2],
-    "dbM": ['accidental.flat', 5, 2],
-    "abM": ['accidental.flat', 4, 2],
-    "ebM": ['accidental.flat', 3, 2],
-    "bbM": ['accidental.flat', 2, 2],
-    "fM": ['accidental.flat', 1, 2]
-}
+accidentalsdic = {"#":["accidental.sharp", 1], "-":["accidental.flat", 2]} 
 
-def accidentals(k, c):
+def accidentals(k, c): 
     res = ''
-    if k != "cM":
-        simbolo = accidentalsdic[k][0]
-        veces = accidentalsdic[k][1] 
-        sitios = accidentalsdic[k][2]
-        for i in range(veces):
-            res += simbolo
+    tipo = dictionary.accidentals[k][0] # returns "#" or "-"
+    if k != "cM": 
+        simbolo = accidentalsdic[tipo][0] 
+        veces = len(dictionary.accidentals[k][1]) 
+        sitios = accidentalsdic[tipo][1] 
+        for i in range(veces): 
+            res += simbolo 
             res += separator
-            res += clefs[c][sitios][i]
-            res += advance
+            res += clefs[c][sitios][i] 
+            res += advance 
     return res
 
 '''
@@ -74,16 +60,17 @@ def accidentals(k, c):
 COMPASES
 ###############
 '''
-compasses = {
-    "M4/4": "digit.4:L4 digit.4:L2",
-    "M3/4": "digit.3:L4 digit.4:L2",
-    "M2/2": "digit.2:L4 digit.2:L2",
-    "M2/4": "digit.2:L4 digit.4:L2",
-    "M6/8": "digit.6:L4 digit.8:L2",
-    "M12/8": "digit.12:L4 digit.8:L2",
-    "M9/8": "digit.9:L4 digit.8:L2",
-    "M5/4": "digit.5:L4 digit.4:L2"
-}
+m_c = ["digit", "L4", "L2"]  #nuevo dict
+
+# ex: c = "M4/4"
+# >> c = "M4/4"
+# >> list(c)
+# >> ['M', '4', '/', '4']
+def compass(c):
+    c_list = list(c)
+    res = m_c[0] + '.' + c_list[1] + separator + m_c[1] + not_advance + m_c[0] + '.' + c_list[4] + separator + m_c[2]
+    return res
+
 
 '''
 ###############
