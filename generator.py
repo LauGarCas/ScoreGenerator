@@ -6,6 +6,8 @@ import manager
 
 nc = input("Introduce el número de compases... ")  #Numero de compases
 numScores = input("Introduce el número de partituras... ") #numero de partituras
+typeagnostic = input("Introduce traducción agnótica standard(0) o split(1)...")
+monopoly = input("Indica si las partituras seran monofónicas(0) o polifónicas(1)...")
 
 nc = int(nc)
 numScores= int(numScores)
@@ -19,13 +21,18 @@ def scoreGenerator(ncompasses, nscores):
             if not os.path.exists(path):
                 os.makedirs(path)
             #creo los archivos de salida
-            manager.init(j, path)
+            manager.init(j, path, typeagnostic)
             nombrearchivo = 'salida' + str(j) +'.txt'
             with open(os.path.join(path, nombrearchivo), "w") as f1:
 
                 #se decide el tipo de clave a utilizar
-                clef = chooseClef()
-                manager.clef(clef)
+                if monopoly == '0':
+                    clef = chooseClef()
+                    manager.clef(clef)
+                elif monopoly == '1':
+                    clef = 'clefG2'
+                    clef2 = 'clefF4'
+                    manager.polyclef(clef, clef2)
 
                 f1.write(clef)
                 f1.write('\n')

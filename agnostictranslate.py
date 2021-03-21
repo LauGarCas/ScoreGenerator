@@ -5,16 +5,22 @@ import dictionary
 SEPARADORES
 ###############
 '''
-separator = ':'
 advance = ' + '
 not_advance = ' '
+
+def valueSeparator(typeagnostic):
+    global separator
+    if typeagnostic == '0':   
+        separator = ':'
+    elif typeagnostic == '1':
+        separator = ' '
 
 '''
 ###############
 NOTAS
 ###############
 '''
-positions = ["S-3", "L-2", "S-2", "L-1",  "S-1", "L0", "S0", "L1",  "S1", "L2", "S2", "L3", "S3", "L4", "S4", "L5", "S5", "L6" "S6", "L7", "S7", "L8"]
+positions = ["S-3", "L-2", "S-2", "L-1", "S-1", "L0", "S0", "L1", "S1", "L2", "S2", "L3", "S3", "L4", "S4", "L5", "S5", "L6", "S6", "L7", "S7", "L8"]
 
 #S2 es el último con la plica hacia arriba, las lineas/espacios superiores tiene la plica hacia abajo
 stem_sep = positions.index("S2") # MARIA: Esto lo tenemos que dejar si o si porque es una norma que siempre se cumple
@@ -24,22 +30,26 @@ stem_sep = positions.index("S2") # MARIA: Esto lo tenemos que dejar si o si porq
 CLAVES
 ###############
 '''
-clefs = {
-    "clefG2": ["clef.G:L2", ["L5","S3","S5","L4","S2","S4","L3"], ["L3","S4","S2","L4","L2","S3","S1"]],
-    "clefF4": ["clef.F:L4", ["L4","S2","S4","L3","S1","S3","L2"], ["L2","S3","S1","L3","L1","S2","S0"]],
-    "clefC3": ["clef.C:L3", ["S4","L3","L5","S3","L2","L4","S2"], ["S2","L4","L2","S3","S1","L3","L1"]],
-    "clefC1": ["clef.C:L1", ["S2","L1","L3","S1","S3","L2","L4"], ["L4","L2","S3","S1","L3","L1","S2"]],
-    "clefG1": ["clef.G:L1", ["L4","S2","S4","L3","S1","S3","L2"], ["L2","S3","S1","L3","L1","S2","S0"]],
-    "clefC2": ["clef.C:L2", ["S3","L2","L4","S2","S4","L3","L5"], ["S1","L3","L1","S2","L4","L2","S3"]],
-    "clefC4": ["clef.C:L4", ["L2","L4","S2","S4","L3","L5","S3"], ["S1","L3","L1","S2","L4","L2","S3"]]
+clefsdic = {
+    "clefG2": ["clef.G","L2", ["L5","S3","S5","L4","S2","S4","L3"], ["L3","S4","S2","L4","L2","S3","S1"]],
+    "clefF4": ["clef.F","L4", ["L4","S2","S4","L3","S1","S3","L2"], ["L2","S3","S1","L3","L1","S2","S0"]],
+    "clefC3": ["clef.C","L3", ["S4","L3","L5","S3","L2","L4","S2"], ["S2","L4","L2","S3","S1","L3","L1"]],
+    "clefC1": ["clef.C","L1", ["S2","L1","L3","S1","S3","L2","L4"], ["L4","L2","S3","S1","L3","L1","S2"]],
+    "clefG1": ["clef.G","L1", ["L4","S2","S4","L3","S1","S3","L2"], ["L2","S3","S1","L3","L1","S2","S0"]],
+    "clefC2": ["clef.C","L2", ["S3","L2","L4","S2","S4","L3","L5"], ["S1","L3","L1","S2","L4","L2","S3"]],
+    "clefC4": ["clef.C","L4", ["L2","L4","S2","S4","L3","L5","S3"], ["S1","L3","L1","S2","L4","L2","S3"]]
 }
+
+def clefs(c):
+    res = clefsdic[c][0]+separator+clefsdic[c][1]
+    return res
 
 '''
 ###############
 TONALIDADES
 ###############
 '''
-accidentalsdic = {"#":["accidental.sharp", 1], "-":["accidental.flat", 2]} 
+accidentalsdic = {"#":["accidental.sharp", 2], "-":["accidental.flat", 3]} 
 
 def accidentals(k, c): 
     res = ''
@@ -51,7 +61,7 @@ def accidentals(k, c):
         for i in range(veces): 
             res += simbolo 
             res += separator
-            res += clefs[c][sitios][i] 
+            res += clefsdic[c][sitios][i] 
             res += advance 
     return res
 
@@ -68,7 +78,7 @@ m_c = ["digit", "L4", "L2"]  #nuevo dict
 # >> ['M', '4', '/', '4']
 def compass(c):
     c_list = list(c)
-    res = m_c[0] + '.' + c_list[1] + separator + m_c[1] + not_advance + m_c[0] + '.' + c_list[4] + separator + m_c[2]
+    res = m_c[0] + '.' + c_list[1] + separator + m_c[1] + not_advance + m_c[0] + '.' + c_list[3] + separator + m_c[2]
     return res
 
 
@@ -89,7 +99,7 @@ def compas(n):
     if n == 0:
         return ''
     else:
-        return 'verticalLine:L1 + '
+        return 'verticalLine'+separator+'L1 + '
 
 def simbolo(linea, clef):
     x = linea.split(" ")
@@ -165,7 +175,7 @@ def simbolo(linea, clef):
     return res
 
 def end():
-    return 'verticalLine:L1'
+    return 'verticalLine'+separator+'L1'
 
 # MARIA
 # La traducción agnóstica que estamos sacando está en la forma standard, porque forma:posición
