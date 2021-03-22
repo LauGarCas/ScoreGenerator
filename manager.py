@@ -26,7 +26,6 @@ def polyclef(c, c2):
     global clave2
     clave = c
     clave2 = c2
-    fKern.write(kern.clefs[clave])
     fKern.write(kern.clefs[clave] + "\t" + kern.clefs[clave2] + "\n")
 
 def key(k):
@@ -36,6 +35,12 @@ def key(k):
 
     fAgnostic.write(agnostic.accidentals(tonalidad, clave))
 
+def polykey(k, k2):
+    global tonalidad
+    global tonalidad2
+    tonalidad = k
+    tonalidad2 = k2
+    fKern.write(kern.accidentals[tonalidad] + '\t' + kern.accidentals[tonalidad2] + '\n')
 
 def metric(c):
     fKern.write(kern.compasses[c[0]] + '\n')
@@ -43,10 +48,16 @@ def metric(c):
     fAgnostic.write(agnostic.compass(c[0]))
     fAgnostic.write(agnostic.advance)
 
+def polymetric(c):
+    fKern.write(kern.compasses[c[0]] + '\t' + kern.compasses[c[0]] + '\n')
+
 def compas(i):
     fKern.write(kern.compas(i) + '\n')
 
     fAgnostic.write(agnostic.compas(i))
+
+def polycompas(i):
+    fKern.write(kern.compas(i) + '\t' + kern.compas(i) + '\n')
 
 def simbolo(s):
     fKern.write(kern.simbolo(s, clave, tonalidad) + '\n')
@@ -55,7 +66,7 @@ def simbolo(s):
     fAgnostic.write(agnostic.advance)
 
 def end(i):
-    fKern.write('=' + str(i) + '\n' + '*_')
+    fKern.write('=' + str(i) + '\n' + '*-')
 
     fAgnostic.write(agnostic.end())
 

@@ -25,31 +25,41 @@ def scoreGenerator(ncompasses, nscores):
             nombrearchivo = 'salida' + str(j) +'.txt'
             with open(os.path.join(path, nombrearchivo), "w") as f1:
 
-                #se decide el tipo de clave a utilizar
+                #se elige el tipo de compas
+                compass = chooseCompass()
+                
+
                 if monopoly == '0':
+                    #se decide el tipo de clave a utilizar
                     clef = chooseClef()
                     manager.clef(clef)
+
+                    f1.write(clef + '\n')
+
+                    #se elige la tonalidad
+                    key = chooseKey()
+                    manager.key(key)
+
+                    f1.write(key + '\n')
+
+                    manager.metric(compass)
+                    f1.write(compass[0] + '\n')
+
                 elif monopoly == '1':
+                    #se decide el tipo de clave a utilizar
                     clef = 'clefG2'
                     clef2 = 'clefF4'
                     manager.polyclef(clef, clef2)
 
-                f1.write(clef)
-                f1.write('\n')
-                    
-                #se elige la tonalidad
-                key = chooseKey()
-                manager.key(key)
+                    f1.write(clef + '\t' + clef2 + '\n')
 
-                f1.write(key)
-                f1.write('\n')
+                    #se elige la tonalidad
+                    key = chooseKey()
+                    key2 = chooseKey()
 
-                #se elige el tipo de compas
-                compass = chooseCompass()
-                manager.metric(compass)
+                    manager.polykey(key, key2)
 
-                f1.write(compass[0])
-                f1.write('\n')
+                    manager.polymetric(compass)
 
                 #inicializamos la ligadura y la altura
                 tie = 0
@@ -60,13 +70,17 @@ def scoreGenerator(ncompasses, nscores):
                     if i == ncompasses - 1:
                         lastcompass = True
                     
-                    #indicamos en qué compás estamos
-                    manager.compas(i)
+                    if monopoly == '0':
+                        #indicamos en qué compás estamos
+                        manager.compas(i)
 
-                    f1.write('compas ')
-                    f1.write(str(i))
-                    f1.write('\n')
-                                    
+                        f1.write('compas ')
+                        f1.write(str(i))
+                        f1.write('\n')
+                    elif monopoly == '1':
+                        #indicamos en qué compás estamos
+                        manager.polycompas(i)
+           
                     #duración del compás
                     duration = compass[1]
 
