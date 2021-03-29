@@ -45,8 +45,6 @@ accidentals = {
 }
 
 #diccionario para guardar las alteraciones que se dan en cada compás
-compass_accidentals = {}
-
 
 '''
 ###############

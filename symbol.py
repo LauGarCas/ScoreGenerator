@@ -1,7 +1,7 @@
 import random
 import dictionary
 
-def generateSymbol(clef, key, duration, tie, pitch, lastcompass):
+def generateSymbol(clef, key, duration, tie, pitch, lastcompass, compass_accidentals):
     #SALIDA -> res = (LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA)
     res = []
     duraciones = [(4, 2, 1, 0.5, 0.25), []]
@@ -45,14 +45,14 @@ def generateSymbol(clef, key, duration, tie, pitch, lastcompass):
         alteraciones = dictionary.accidentals[key]
 
         #La nota ya ha sido alterada previamente en el compás solo podremos cambiar esta alteración por una de las otras dos
-        if notaAbs in dictionary.compass_accidentals:
+        if notaAbs in compass_accidentals:
             #vemos con que estaba alterada
-            if dictionary.compass_accidentals[notaAbs] == '#':
-                alteracion = random.choice(['+', '-'])
-            if dictionary.compass_accidentals[notaAbs] == '-':
-                alteracion = random.choice(['#', '+'])
-            if dictionary.compass_accidentals[notaAbs] == '+':
-                alteracion = random.choice(['#', '-'])
+            if compass_accidentals[notaAbs] == '#':
+                alteracion = random.choice(['+ ', '- '])
+            if compass_accidentals[notaAbs] == '-':
+                alteracion = random.choice(['# ', '+ '])
+            if compass_accidentals[notaAbs] == '+':
+                alteracion = random.choice(['# ', '- '])
         
         #si no ha sido alterada todavia
         else:
@@ -62,7 +62,7 @@ def generateSymbol(clef, key, duration, tie, pitch, lastcompass):
             else:
                 alteracion = random.choice(['#', '-'])
 
-        dictionary.compass_accidentals[notaAbs] = alteracion
+        compass_accidentals[notaAbs] = alteracion
     
     #definimos ligadura -> 0 no hay ligadura, 1 se abre ligadura, 2 hay ligadura abierta, 3 se cierra ligadura
     if res[0] == 'n' and tie == 0 and lastcompass==False: #es una nota y NO hay ligadura empezada y no estamos en el último compass

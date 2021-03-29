@@ -4,6 +4,9 @@ import symbol
 import dictionary
 import manager
 
+compass_accidentals = {}
+compass_accidentals2 = {}
+
 nc = input("Introduce el número de compases... ")  #Numero de compases
 numScores = input("Introduce el número de partituras... ") #numero de partituras
 typeagnostic = input("Introduce traducción agnótica standard(0) o split(1)...")
@@ -20,16 +23,16 @@ def scoreGenerator(ncompasses, nscores):
             path = 'salida'+str(j)
             if not os.path.exists(path):
                 os.makedirs(path)
-            #creo los archivos de salida
-            manager.init(j, path, typeagnostic)
+            
             nombrearchivo = 'salida' + str(j) +'.txt'
             with open(os.path.join(path, nombrearchivo), "w") as f1:
 
                 #se elige el tipo de compas
                 compass = chooseCompass()
-                
-
-                if monopoly == '0':
+            
+                if monopoly == '0': #MONOPHONIC
+                    #creo los archivos de salida
+                    manager.init(j, path, typeagnostic)
                     #se decide el tipo de clave a utilizar
                     clef = chooseClef()
                     manager.clef(clef)
@@ -45,64 +48,144 @@ def scoreGenerator(ncompasses, nscores):
                     manager.metric(compass)
                     f1.write(compass[0] + '\n')
 
-                elif monopoly == '1':
-                    #se decide el tipo de clave a utilizar
-                    clef = 'clefG2'
-                    clef2 = 'clefF4'
-                    manager.polyclef(clef, clef2)
+                    #inicializamos la ligadura y la altura
+                    tie = 0
+                    pitch = 11 #número entre el 1 y el 22 -> lo podría cambiar por un random
+                    #se empiezan a generar compases
+                    for i in range(ncompasses):
+                        lastcompass = False
+                        if i == ncompasses - 1:
+                            lastcompass = True
 
-                    f1.write(clef + '\t' + clef2 + '\n')
-
-                    #se elige la tonalidad
-                    key = chooseKey()
-                    key2 = chooseKey()
-
-                    manager.polykey(key, key2)
-
-                    manager.polymetric(compass)
-
-                #inicializamos la ligadura y la altura
-                tie = 0
-                pitch = 11 #número entre el 1 y el 22 -> lo podría cambiar por un random
-                #se empiezan a generar compases
-                for i in range(ncompasses):
-                    lastcompass = False
-                    if i == ncompasses - 1:
-                        lastcompass = True
-                    
-                    if monopoly == '0':
                         #indicamos en qué compás estamos
                         manager.compas(i)
 
                         f1.write('compas ')
                         f1.write(str(i))
                         f1.write('\n')
-                    elif monopoly == '1':
+            
+                        #duración del compás
+                        duration = compass[1]
+
+                        while duration>0:
+                            #generamos la nota o el silencio
+                            simbolo = symbol.generateSymbol(clef, key, duration, tie, pitch, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+
+                            #Escribimos el simbolo
+                            manager.simbolo(simbolo[0], compass_accidentals)
+
+                            f1.write(simbolo[0])
+                            f1.write('\n')
+                            
+                            duration = duration - simbolo[1]
+                            tie = simbolo[3]
+                            pitch = simbolo[2]
+                        
+                        #cuando se acaba el compás borramos el diccionario temporal de alteraciones
+                        compass_accidentals.clear()
+                    #fin de los archivos
+                    manager.end(ncompasses+1)
+                elif monopoly == '1': #POLYPHONIC
+                    #creo los archivos de salida
+                    manager.polyinit(j, path, typeagnostic)
+                    #se decide el tipo de clave a utilizar
+                    clef = 'clefF4'
+                    clef2 = 'clefG2'
+                    manager.polyclef(clef, clef2)
+
+                    f1.write(clef + '\t' + clef2 + '\n')
+
+                    #se elige la tonalidad
+                    key = chooseKey()
+                    manager.polykey(key)
+
+                    f1.write(key + '\t' + key + '\n')
+
+                    manager.polymetric(compass)
+                    f1.write(compass[0] + '\t' + compass[0] + '\n')
+
+                    #inicializamos la ligadura y la altura
+                    tie1 = 0
+                    tie2 = 0
+                    pitch1 = 11 #número entre el 1 y el 22 -> lo podría cambiar por un random
+                    pitch2 = 11 #número entre el 1 y el 22 -> lo podría cambiar por un random
+                    #se empiezan a generar compases
+                    for i in range(ncompasses):
+                        lastcompass = False
+                        if i == ncompasses - 1:
+                            lastcompass = True
+
                         #indicamos en qué compás estamos
                         manager.polycompas(i)
-           
-                    #duración del compás
-                    duration = compass[1]
 
-                    while duration>0:
-                        #generamos la nota o el silencio
-                        simbolo = symbol.generateSymbol(clef, key, duration, tie, pitch, lastcompass) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                        f1.write('compas ' + str(i) + '\t' + 'compas ' + str(i) + '\n')
+            
+                        #duración del compás
+                        duration = compass[1]
 
-                        #Escribimos el simbolo
-                        manager.simbolo(simbolo[0])
+                        #para tener en cuenta la diferencia de duración entre las notas de cada compás
+                        extradur = 0
 
-                        f1.write(simbolo[0])
-                        f1.write('\n')
+                        while duration>0 or extradur>0:
+                            if extradur == 0:
+                                #generamos la nota o el silencio para cada uno de los compases
+                                simbolo1 = symbol.generateSymbol(clef, key, duration, tie1, pitch1, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                simbolo2 = symbol.generateSymbol(clef, key, duration, tie2, pitch2, lastcompass, compass_accidentals2) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+
+                                extradur = abs(simbolo1[1] - simbolo2[1])
+                                
+                                #Escribimos el simbolo
+                                manager.polysimbolo(simbolo1[0], simbolo2[0], compass_accidentals, compass_accidentals2)
+
+                                f1.write(simbolo1[0] + '\t' + simbolo2[0] + '\n')
+                           
+                                if simbolo1[1]>simbolo2[1]:
+                                    subduration = duration - simbolo2[1]
+                                    duration = duration - simbolo1[1]
+                                else:
+                                    subduration = duration - simbolo1[1]
+                                    duration = duration - simbolo2[1]
+                            
+                                tie1 = simbolo1[3]
+                                tie2 = simbolo2[3]
+                                pitch1 = simbolo1[2]
+                                pitch2 = simbolo2[2]
+                            else:
+                                if simbolo1[1]>simbolo2[1]:
+                                    simbolo2 = symbol.generateSymbol(clef, key, subduration, tie2, pitch2, lastcompass, compass_accidentals2) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                    #Escribimos el simbolo
+                                    manager.polysimbolo('.', simbolo2[0], '', compass_accidentals2)
+                                    tie2 = simbolo2[3]
+                                    pitch2 = simbolo2[2]
+                                    if extradur > simbolo2[1]:
+                                        extradur = extradur - simbolo2[1]
+                                        subduration = subduration - simbolo2[1]
+                                    else:
+                                        extradur = simbolo2[1] - extradur
+                                        subduration = duration
+                                        duration = duration - extradur
+                                else:
+                                    simbolo1 = symbol.generateSymbol(clef, key, subduration, tie1, pitch1, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                    #Escribimos el simbolo
+                                    manager.polysimbolo(simbolo1[0], '.', compass_accidentals, '')
+                                    tie1 = simbolo1[3]
+                                    pitch1 = simbolo1[2]
+                                    if extradur > simbolo1[1]:
+                                        extradur = extradur - simbolo1[1]
+                                        subduration = subduration - simbolo1[1]
+                                    else:
+                                        extradur = simbolo1[1] - extradur
+                                        subduration = duration
+                                        duration = duration - extradur
+
+                                
                         
-                        duration = duration - simbolo[1]
-                        tie = simbolo[3]
-                        pitch = simbolo[2]
-                    
-                    #cuando se acaba el compás borramos el diccionario temporal de alteraciones
-                    dictionary.compass_accidentals.clear()
+                        #cuando se acaba el compás borramos el diccionario temporal de alteraciones
+                        compass_accidentals.clear()
+                        compass_accidentals2.clear()
                 
-                #fin de los archivos
-                manager.end(ncompasses+1)
+                    #fin de los archivos
+                    manager.polyend(ncompasses+1)
         except:
             print('Error')
             raise

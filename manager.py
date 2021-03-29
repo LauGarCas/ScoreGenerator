@@ -13,6 +13,17 @@ def init(i, path, typeagnostic):
     fAgnostic = open(os.path.join(path, nombrearchivoagnostico), "w")
     agnostic.valueSeparator(typeagnostic)
 
+def polyinit(i, path, typeagnostic):
+    nombrearchivokern = 'k' + str(i) +'.kern'
+    global fKern 
+    fKern = open(os.path.join(path, nombrearchivokern), "w")
+    fKern.write('**kern\t**kern\n')
+
+    nombrearchivoagnostico = 'a' + str(i) +'.txt'
+    global fAgnostic 
+    fAgnostic = open(os.path.join(path, nombrearchivoagnostico), "w")
+    agnostic.valueSeparator(typeagnostic)
+
 def clef(c):
     global clave
     clave = c
@@ -35,12 +46,10 @@ def key(k):
 
     fAgnostic.write(agnostic.accidentals(tonalidad, clave))
 
-def polykey(k, k2):
+def polykey(k):
     global tonalidad
-    global tonalidad2
     tonalidad = k
-    tonalidad2 = k2
-    fKern.write(kern.accidentals[tonalidad] + '\t' + kern.accidentals[tonalidad2] + '\n')
+    fKern.write(kern.accidentals[tonalidad] + '\t' + kern.accidentals[tonalidad] + '\n')
 
 def metric(c):
     fKern.write(kern.compasses[c[0]] + '\n')
@@ -59,16 +68,22 @@ def compas(i):
 def polycompas(i):
     fKern.write(kern.compas(i) + '\t' + kern.compas(i) + '\n')
 
-def simbolo(s):
-    fKern.write(kern.simbolo(s, clave, tonalidad) + '\n')
+def simbolo(s, compass_accidentals):
+    fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\n')
 
     fAgnostic.write(agnostic.simbolo(s, clave))
     fAgnostic.write(agnostic.advance)
+
+def polysimbolo(s, s2, compass_accidentals, compass_accidentals2):
+    fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\t' + kern.simbolo(s2, clave, tonalidad, compass_accidentals2) + '\n')
 
 def end(i):
     fKern.write('=' + str(i) + '\n' + '*-')
 
     fAgnostic.write(agnostic.end())
+
+def polyend(i):
+    fKern.write('=' + str(i) + '\t' + '=' + str(i) + '\n' + '*-' + '\t' + '*-')
 
 def close():
     fKern.close()
