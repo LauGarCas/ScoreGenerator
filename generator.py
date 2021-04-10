@@ -120,65 +120,54 @@ def scoreGenerator(ncompasses, nscores):
 
                         f1.write('compas ' + str(i) + '\t' + 'compas ' + str(i) + '\n')
             
-                        #duración del compás
-                        duration = compass[1]
+                        duration1 = compass[1] #duración del compás en el primer pentagrama
+                        duration2 = compass[1] #duración del compás en el segundo pentagrama
 
-                        #para tener en cuenta la diferencia de duración entre las notas de cada compás
-                        extradur = 0
-
-                        while duration>0 or extradur>0:
-                            if extradur == 0:
+                        while duration1>0 or duration2>0: #mientras haya espacio en alguno de los dos pentagramas
+                            if duration1 == duration2: #hay la misma duración en los dos pentagramas
                                 #generamos la nota o el silencio para cada uno de los compases
-                                simbolo1 = symbol.generateSymbol(clef, key, duration, tie1, pitch1, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
-                                simbolo2 = symbol.generateSymbol(clef, key, duration, tie2, pitch2, lastcompass, compass_accidentals2) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
-
-                                extradur = abs(simbolo1[1] - simbolo2[1])
+                                simbolo1 = symbol.generateSymbol(clef, key, duration1, tie1, pitch1, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                simbolo2 = symbol.generateSymbol(clef2, key, duration2, tie2, pitch2, lastcompass, compass_accidentals2) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
                                 
                                 #Escribimos el simbolo
                                 manager.polysimbolo(simbolo1[0], simbolo2[0], compass_accidentals, compass_accidentals2)
 
                                 f1.write(simbolo1[0] + '\t' + simbolo2[0] + '\n')
                            
-                                if simbolo1[1]>simbolo2[1]:
-                                    subduration = duration - simbolo2[1]
-                                    duration = duration - simbolo1[1]
-                                else:
-                                    subduration = duration - simbolo1[1]
-                                    duration = duration - simbolo2[1]
-                            
+                                #actualizamos las duraciones
+                                duration1 = duration1 - simbolo1[1]
+                                duration2 = duration2 - simbolo2[1]
+                                                        
                                 tie1 = simbolo1[3]
                                 tie2 = simbolo2[3]
                                 pitch1 = simbolo1[2]
                                 pitch2 = simbolo2[2]
-                            else:
-                                if simbolo1[1]>simbolo2[1]:
-                                    simbolo2 = symbol.generateSymbol(clef, key, subduration, tie2, pitch2, lastcompass, compass_accidentals2) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                            else: #uno de los dos pentagramas va mas adelantado que el otro
+                                if duration1<duration2: #El primer pentagrama va más adelantado
+                                    simbolo2 = symbol.generateSymbol(clef2, key, duration2, tie2, pitch2, lastcompass, compass_accidentals2) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                    
                                     #Escribimos el simbolo
                                     manager.polysimbolo('.', simbolo2[0], '', compass_accidentals2)
+                                    f1.write('nada' + '\t' + simbolo2[0] + '\n')
+                                    
+                                    #Actualizamos las duraciones
+                                    duration2 = duration2 - simbolo2[1]
+
                                     tie2 = simbolo2[3]
                                     pitch2 = simbolo2[2]
-                                    if extradur > simbolo2[1]:
-                                        extradur = extradur - simbolo2[1]
-                                        subduration = subduration - simbolo2[1]
-                                    else:
-                                        extradur = simbolo2[1] - extradur
-                                        subduration = duration
-                                        duration = duration - extradur
-                                else:
-                                    simbolo1 = symbol.generateSymbol(clef, key, subduration, tie1, pitch1, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                    
+                                else: #El segundo pentagrama va mas adelantado
+                                    simbolo1 = symbol.generateSymbol(clef, key, duration1, tie1, pitch1, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                    
                                     #Escribimos el simbolo
                                     manager.polysimbolo(simbolo1[0], '.', compass_accidentals, '')
-                                    tie1 = simbolo1[3]
-                                    pitch1 = simbolo1[2]
-                                    if extradur > simbolo1[1]:
-                                        extradur = extradur - simbolo1[1]
-                                        subduration = subduration - simbolo1[1]
-                                    else:
-                                        extradur = simbolo1[1] - extradur
-                                        subduration = duration
-                                        duration = duration - extradur
+                                    f1.write(simbolo1[0] + '\t' + 'nada' + '\n')
+                                   
+                                    #actualizamos las duraciones
+                                    duration1 = duration1 - simbolo1[1]
 
-                                
+                                    tie1 = simbolo1[3]
+                                    pitch1 = simbolo1[2]                             
                         
                         #cuando se acaba el compás borramos el diccionario temporal de alteraciones
                         compass_accidentals.clear()
