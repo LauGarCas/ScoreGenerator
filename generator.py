@@ -160,9 +160,9 @@ def scoreGenerator(ncompasses, nscores):
                                     simbolo1 = symbol.generateSymbol(clef, key, duration1, tie1, pitch1, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
                                     
                                     #Escribimos el simbolo
-                                    manager.polysimbolo(simbolo1[0], '.', compass_accidentals, '')
                                     f1.write(simbolo1[0] + '\t' + 'nada' + '\n')
-                                   
+                                    manager.polysimbolo(simbolo1[0], '.', compass_accidentals, '')
+                                        
                                     #actualizamos las duraciones
                                     duration1 = duration1 - simbolo1[1]
 

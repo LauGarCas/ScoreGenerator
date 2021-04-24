@@ -89,7 +89,7 @@ def generateSymbol(clef, key, duration, tie, pitch, lastcompass, compass_acciden
         res[0] = str(res[0]) + ' ' + str(res[1]) + ' ' 
     
     if puntillo == 1:
-        res[0] += '.'
+        res[0] += ' .'
         res[1] = durpunt #si hay puntillo actualizamos la duración total
     if res[3] == 1:
         res[0] += ' ('
