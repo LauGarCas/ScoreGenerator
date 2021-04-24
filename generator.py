@@ -174,7 +174,7 @@ def scoreGenerator(ncompasses, nscores):
                         compass_accidentals2.clear()
                 
                     #fin de los archivos
-                    manager.polyend(ncompasses+1)
+                    manager.polyend(ncompasses+1, path)
         except:
             print('Error')
             raise

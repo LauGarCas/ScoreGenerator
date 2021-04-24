@@ -101,17 +101,21 @@ def simbolo(s, compass_accidentals):
 def polysimbolo(s, s2, compass_accidentals, compass_accidentals2):
     fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\t' + kern.simbolo(s2, clave, tonalidad, compass_accidentals2) + '\n')
 
-    fAgnostic.write(agnostic.simbolo(s, clave))
-    fAgnostic.write(agnostic.advance)
-    fAgnostic2.write(agnostic.simbolo(s2, clave2))
-    fAgnostic2.write(agnostic.advance)
+    res = agnostic.simbolo(s, clave)
+    fAgnostic.write(res)
+    if res!= '':
+        fAgnostic.write(agnostic.advance)
+    res = agnostic.simbolo(s2, clave2)
+    fAgnostic2.write(res)
+    if res!= '':
+        fAgnostic2.write(agnostic.advance)
 
 def end(i):
     fKern.write('=' + str(i) + '\n' + '*-')
 
     fAgnostic.write(agnostic.end())
 
-def polyend(i):
+def polyend(i, path):
     fKern.write('=' + str(i) + '\t' + '=' + str(i) + '\n' + '*-' + '\t' + '*-')
 
     fAgnostic.write(agnostic.end())
@@ -120,8 +124,10 @@ def polyend(i):
     fAgnostic.write('\n')
     fAgnostic2.close()
 
-    with open(nombrearchivoagnostico2) as infile:
-        fAgnostic.write(infile.read())
+    with open(os.path.join(path, nombrearchivoagnostico2), "r") as f:
+        fAgnostic.write(f.read())
+
+    os.remove(os.path.join(path, nombrearchivoagnostico2))
 
 
 def close():

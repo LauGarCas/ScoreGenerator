@@ -103,74 +103,77 @@ def compas(n):
 
 def simbolo(linea, clef):
     x = linea.split(" ")
+    if x[0]!= '.':
 
-    #vemos si es una nota o un silencio
-    if x[0] == 'n':
-        res = 'note.'
-    else:
-        res = 'rest.'
-
-    #escribimos la duración
-    res += durations[x[1]]
-
-    #traducimos la altura de la nota o el silencio
-    if x[0] == 'n':
-        notaAbs = int(x[2])-1
-        if notaAbs > stem_sep:
-            res += '_down'
-        else: 
-            res += '_up'
-        pos = positions[notaAbs]  
-    else:
-        pos = 'L3'
-        if durations[x[1]] == 'whole':
-            pos = 'L4' #solo el silencio de redonda
-    res += separator + pos    
-
-
-    #si hay ligadura la añadimos
-    # Las ligaduras se traducen su principio y fin de ligura
-    # Principio -> slur.start:posiciondelanotaqueacompaña
-    # Fin -> slur.end:posiciondelanotaqueacompaña
-    # Por tanto, aparecen en la misma posición horizontal que la nota (van separadas por un espacio en blanco)
-    # Si la plica de la nota está para abajo, la ligadura va encima de la nota
-    # Si la plica de la nota está para arriba, la ligadura va debajo de la nota
-    # Hay que llevar el orden en cuenta para poner primero una cosa u otra como en las alteraciones
-    if '(' in x:
-        slur = 'slur.start' + separator + pos
-    if ')' in x:
-        slur = 'slur.end' + separator + pos
-    if '(' in x or ')' in x:
-        if int(x[2])-1 > stem_sep:
-            #down  
-            res = slur + not_advance + res
+        #vemos si es una nota o un silencio
+        if x[0] == 'n':
+            res = 'note.'
         else:
-            #up
-            res += not_advance + slur
+            res = 'rest.'
 
+        #escribimos la duración
+        res += durations[x[1]]
 
-    #si hay puntillo lo escribimos
-    if '.' in x:
-        #el puntillo SIEMPRE va en un espacio
-        #si la posición de una nota es una línea el puntillo aparece en el espacio que queda arriba de la línea
-        if pos[0] == 'L':
-            pos_dot = 'S' + pos[1:]
+        #traducimos la altura de la nota o el silencio
+        if x[0] == 'n':
+            notaAbs = int(x[2])-1
+            if notaAbs > stem_sep:
+                res += '_down'
+            else: 
+                res += '_up'
+            pos = positions[notaAbs]  
         else:
-            pos_dot = pos
-        res += advance + 'dot' + separator + pos_dot
+            pos = 'L3'
+            if durations[x[1]] == 'whole':
+                pos = 'L4' #solo el silencio de redonda
+        res += separator + pos    
 
-    #si hay alguna alteracion la añadimos
-    if '#' in x:
-        acc = 'accidental.sharp' + separator + pos
-        #las alteraciones aparecen a la derecha del simbolo
-        res = acc + advance + res 
-    if '-' in x:
-        acc = 'accidental.flat' + separator + pos
-        res = acc + advance + res
-    if '-' in x:
-        acc = 'accidental.natural' + separator + pos 
-        res = acc + advance + res
 
+        #si hay ligadura la añadimos
+        # Las ligaduras se traducen su principio y fin de ligura
+        # Principio -> slur.start:posiciondelanotaqueacompaña
+        # Fin -> slur.end:posiciondelanotaqueacompaña
+        # Por tanto, aparecen en la misma posición horizontal que la nota (van separadas por un espacio en blanco)
+        # Si la plica de la nota está para abajo, la ligadura va encima de la nota
+        # Si la plica de la nota está para arriba, la ligadura va debajo de la nota
+        # Hay que llevar el orden en cuenta para poner primero una cosa u otra como en las alteraciones
+        if '(' in x:
+            slur = 'slur.start' + separator + pos
+        if ')' in x:
+            slur = 'slur.end' + separator + pos
+        if '(' in x or ')' in x:
+            if int(x[2])-1 > stem_sep:
+                #down  
+                res = slur + not_advance + res
+            else:
+                #up
+                res += not_advance + slur
+
+
+        #si hay puntillo lo escribimos
+        if '.' in x:
+            #el puntillo SIEMPRE va en un espacio
+            #si la posición de una nota es una línea el puntillo aparece en el espacio que queda arriba de la línea
+            if pos[0] == 'L':
+                pos_dot = 'S' + pos[1:]
+            else:
+                pos_dot = pos
+            res += advance + 'dot' + separator + pos_dot
+
+        #si hay alguna alteracion la añadimos
+        if '#' in x:
+            acc = 'accidental.sharp' + separator + pos
+            #las alteraciones aparecen a la derecha del simbolo
+            res = acc + advance + res 
+        if '-' in x:
+            acc = 'accidental.flat' + separator + pos
+            res = acc + advance + res
+        if '-' in x:
+            acc = 'accidental.natural' + separator + pos 
+            res = acc + advance + res
+
+    else:
+        res = ''
 
     return res
 

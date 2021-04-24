@@ -1,1 +1,0 @@
-clef.G L2 + accidental.flat L3 + digit.3 L4 digit.4 L2 + note.sixteenth_up L2 + 
