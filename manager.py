@@ -19,9 +19,9 @@ def polyinit(i, path, typeagnostic):
     fKern = open(os.path.join(path, nombrearchivokern), "w")
     fKern.write('**kern\t**kern\n')
 
-    global nombrearchivoagnostico2
-    nombrearchivoagnostico1 = 'a' + str(i) +'.txt'
-    nombrearchivoagnostico2 = 'a_' + str(i) +'.txt'
+    global nombrearchivoagnostico1
+    nombrearchivoagnostico1 = 'a_' + str(i) +'.txt'
+    nombrearchivoagnostico2 = 'a' + str(i) +'.txt'
 
     global fAgnostic 
     global fAgnostic2
@@ -119,15 +119,15 @@ def polyend(i, path):
     fKern.write('=' + str(i) + '\t' + '=' + str(i) + '\n' + '*-' + '\t' + '*-')
 
     fAgnostic.write(agnostic.end())
-    fAgnostic.write(agnostic.end())
+    fAgnostic2.write(agnostic.end())
     #Combinamos los dos archivos en uno
-    fAgnostic.write('\n')
-    fAgnostic2.close()
+    fAgnostic2.write('\n')
+    fAgnostic.close()
 
-    with open(os.path.join(path, nombrearchivoagnostico2), "r") as f:
-        fAgnostic.write(f.read())
+    with open(os.path.join(path, nombrearchivoagnostico1), "r") as f:
+        fAgnostic2.write(f.read())
 
-    os.remove(os.path.join(path, nombrearchivoagnostico2))
+    os.remove(os.path.join(path, nombrearchivoagnostico1))
 
 
 def close():
