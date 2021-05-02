@@ -99,7 +99,7 @@ def simbolo(s, compass_accidentals):
     fAgnostic.write(agnostic.advance)
 
 def polysimbolo(s, s2, compass_accidentals, compass_accidentals2):
-    fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\t' + kern.simbolo(s2, clave, tonalidad, compass_accidentals2) + '\n')
+    fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\t' + kern.simbolo(s2, clave2, tonalidad, compass_accidentals2) + '\n')
 
     res = agnostic.simbolo(s, clave)
     fAgnostic.write(res)
