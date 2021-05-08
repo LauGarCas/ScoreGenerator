@@ -68,18 +68,37 @@ def scoreGenerator(ncompasses, nscores):
                         duration = compass[1]
 
                         while duration>0:
+                            
                             #generamos la nota o el silencio
-                            simbolo = symbol.generateSymbol(clef, key, duration, tie, pitch, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
-
+                            simbolo = symbol.generateSymbol(clef, key, duration, tie, pitch, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA, ACORDE, ?PUNTILLO]
+                            print(simbolo)
+                            pitch = simbolo[2]
+                            #empieza un acorde
+                            if simbolo[4] == 1:
+                                f1.write('c ')
+                                puntillo = simbolo[5]
+                                notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 1 o de 2 notas
+                                lastNota = False
+                                while notasAcorde>0:
+                                    tie = simbolo[3]
+                                    pitch = simbolo[2]
+                                    if notasAcorde == 1:
+                                        lastNota = True
+                                    manager.simbolo(simbolo[0], compass_accidentals, True)
+                                    f1.write(simbolo[0] + ' ')
+                                    simbolo = symbol.generateChord(clef, key, simbolo[1], pitch, puntillo, tie, compass_accidentals, lastcompass, lastNota) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                    print(simbolo)
+                                    notasAcorde -= 1
+                                    
                             #Escribimos el simbolo
-                            manager.simbolo(simbolo[0], compass_accidentals)
+                            manager.simbolo(simbolo[0], compass_accidentals, False)
 
                             f1.write(simbolo[0])
                             f1.write('\n')
                             
                             duration = duration - simbolo[1]
                             tie = simbolo[3]
-                            pitch = simbolo[2]
+                            
                         
                         #cuando se acaba el compás borramos el diccionario temporal de alteraciones
                         compass_accidentals.clear()

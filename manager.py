@@ -91,9 +91,12 @@ def polycompas(i):
     fAgnostic.write(agnostic.compas(i))
     fAgnostic2.write(agnostic.compas(i))
 
+def simbolo(s, compass_accidentals, chord):
+    if chord:
+        fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + ' ')
+    else:
+        fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\n')
 
-def simbolo(s, compass_accidentals):
-    fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\n')
 
     fAgnostic.write(agnostic.simbolo(s, clave))
     fAgnostic.write(agnostic.advance)
