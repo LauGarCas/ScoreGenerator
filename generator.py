@@ -73,6 +73,8 @@ def scoreGenerator(ncompasses, nscores):
                             simbolo = symbol.generateSymbol(clef, key, duration, tie, pitch, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA, ACORDE, ?PUNTILLO]
                             print(simbolo)
                             pitch = simbolo[2]
+                            tie = simbolo[3]
+
                             #empieza un acorde
                             if simbolo[4] == 1:
                                 f1.write('c ')
@@ -80,13 +82,12 @@ def scoreGenerator(ncompasses, nscores):
                                 notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 1 o de 2 notas
                                 lastNota = False
                                 while notasAcorde>0:
-                                    tie = simbolo[3]
-                                    pitch = simbolo[2]
+                                    pitch2 = simbolo[2]
                                     if notasAcorde == 1:
                                         lastNota = True
                                     manager.simbolo(simbolo[0], compass_accidentals, True)
                                     f1.write(simbolo[0] + ' ')
-                                    simbolo = symbol.generateChord(clef, key, simbolo[1], pitch, puntillo, tie, compass_accidentals, lastcompass, lastNota) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                    simbolo = symbol.generateChord(clef, key, simbolo[1], pitch2, puntillo, tie, compass_accidentals, lastcompass, lastNota) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
                                     print(simbolo)
                                     notasAcorde -= 1
                                     

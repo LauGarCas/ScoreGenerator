@@ -159,6 +159,8 @@ def generateChord(clef, key, duration, pitch, dot, tie, compass_accidentals, las
         res.append(3)
     elif tie != 0 and tie != 1 and lastcompass==False and lastNote==True: #si es la ultima nota de un acorde y en ese acorde no se ha abierto la ligadura, si hay ligadura pero no estamos en el úlitmo compás se puede cerrar o no
         res.append(random.choices([3,2], weights=(80, 20), k=1)[0])
+    elif tie == 1:
+        res.append(2)
     else:
         res.append(0)
         
