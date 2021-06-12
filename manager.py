@@ -2,6 +2,9 @@ import os
 import kerntranslate as kern
 import agnostictranslate as agnostic
 
+hayAcorde = False
+escribirAcorde = []
+
 def init(i, path, typeagnostic):
     nombrearchivokern = 'k' + str(i) +'.kern'
     global fKern 
@@ -97,9 +100,21 @@ def simbolo(s, compass_accidentals, chord):
     else:
         fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\n')
 
+    if not hayAcorde and not chord: #es una nota normal
+        fAgnostic.write(agnostic.simbolo(s, clave))
+        fAgnostic.write(agnostic.advance)
+    
+    if not hayAcorde and chord: #es la primera nota del acorde
+        hayAcorde=True
+        escribirAcorde.append(s)
 
-    fAgnostic.write(agnostic.simbolo(s, clave))
-    fAgnostic.write(agnostic.advance)
+    if hayAcorde and chord: #estamos dentro de un acorde
+        escribirAcorde.append(s)
+
+    if hayAcorde and not chord: #es la ultima nota del acorde
+        hayAcorde=False
+        escribirAcorde.append(s)
+        fAgnostic.write(agnostic.acorde(s, clave))
 
 def polysimbolo(s, s2, compass_accidentals, compass_accidentals2):
     fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\t' + kern.simbolo(s2, clave2, tonalidad, compass_accidentals2) + '\n')
