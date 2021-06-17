@@ -1,41 +1,58 @@
-clefC3
-cM
+clefF4
+ebM
 M4/4
 compas 0
-n 1 12 -
-n 0.25 13  (
-n 2 14 - )
-n 0.5 13 
-n 0.25 13 
-compas 1
-r 0.25 
-n 2 12  (
-n 0.5 12  )
+n 0.25 11 
 n 1 12 
+r 2 
+n 0.5 12 
+n 0.25 12 
+compas 1
+n 2 12 
+c n 0.25 11  n 0.25 9 
+n 1 11 
+n 0.5 11 
 n 0.25 12 
 compas 2
-n 4 11 
-compas 3
-n 1 11 
-c n 0.25 11  ( n 0.25 9 
-n 1 12  )
-n 0.5 13 
-n 1 13 
-n 0.25 13 
-compas 4
-n 4 14 
-compas 5
-n 4 13 #
-compas 6
-n 2 12 #
-r 1 
-c n 1 11  ( n 1 9 
-compas 7
-n 1 10  )
-n 2 9 
-n 1 9 -
-compas 8
-n 4 9 
-compas 9
+n 0.25 11 
 r 2 
-n 2 9 
+n 1 10  (
+n 0.25 9 # )
+r 0.25 
+n 0.25 10  (
+compas 3
+n 0.25 9  )
+r 2  .
+n 0.5 8 
+c n 0.25 7  n 0.25 5  n 0.25 3 
+compas 4
+n 2 6  .
+r 1 
+compas 5
+n 1 7 
+n 1 8 
+n 2 8 
+compas 6
+n 1 8 
+n 1 8 
+n 1 8 
+n 0.5 7 
+n 0.25 8 #
+n 0.25 9 
+compas 7
+n 0.5 10 
+n 0.25 10  (
+n 0.25 11 - )
+n 1 10 
+c n 0.5 10  n 0.5 8  n 0.5 6 
+n 0.5 10 
+c n 0.5 11  n 0.5 9  n 0.5 7 
+c n 0.5 12  n 0.5 10 # n 0.5 8 
+compas 8
+n 0.5 11 
+n 1 11 
+n 0.25 12 
+n 0.25 12 
+n 2 13 
+compas 9
+n 4 13 

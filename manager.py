@@ -2,9 +2,6 @@ import os
 import kerntranslate as kern
 import agnostictranslate as agnostic
 
-hayAcorde = False
-escribirAcorde = []
-
 def init(i, path, typeagnostic):
     nombrearchivokern = 'k' + str(i) +'.kern'
     global fKern 
@@ -15,6 +12,12 @@ def init(i, path, typeagnostic):
     global fAgnostic 
     fAgnostic = open(os.path.join(path, nombrearchivoagnostico), "w")
     agnostic.valueSeparator(typeagnostic)
+
+    global hayAcorde
+    hayAcorde = False
+
+    global escribirAcorde
+    escribirAcorde = []
 
 def polyinit(i, path, typeagnostic):
     nombrearchivokern = 'k' + str(i) +'.kern'
@@ -32,6 +35,12 @@ def polyinit(i, path, typeagnostic):
     fAgnostic2 = open(os.path.join(path, nombrearchivoagnostico2), "w")
 
     agnostic.valueSeparator(typeagnostic)
+
+    global hayAcorde
+    hayAcorde = False
+
+    global escribirAcorde
+    escribirAcorde = []
 
 def clef(c):
     global clave
@@ -95,6 +104,8 @@ def polycompas(i):
     fAgnostic2.write(agnostic.compas(i))
 
 def simbolo(s, compass_accidentals, chord):
+    global hayAcorde
+    global escribirAcorde
     if chord:
         fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + ' ')
     else:
@@ -103,18 +114,22 @@ def simbolo(s, compass_accidentals, chord):
     if not hayAcorde and not chord: #es una nota normal
         fAgnostic.write(agnostic.simbolo(s, clave))
         fAgnostic.write(agnostic.advance)
+
+    elif hayAcorde and chord: #estamos dentro de un acorde
+        print('dentro nota')
+        escribirAcorde.append(s)
     
-    if not hayAcorde and chord: #es la primera nota del acorde
+    elif not hayAcorde and chord: #es la primera nota del acorde
+        print('primera nota')
         hayAcorde=True
         escribirAcorde.append(s)
 
-    if hayAcorde and chord: #estamos dentro de un acorde
-        escribirAcorde.append(s)
-
-    if hayAcorde and not chord: #es la ultima nota del acorde
+    elif hayAcorde and not chord: #es la ultima nota del acorde
+        print('ultima nota')
         hayAcorde=False
         escribirAcorde.append(s)
-        fAgnostic.write(agnostic.acorde(s, clave))
+        fAgnostic.write(agnostic.acorde(escribirAcorde, clave))
+        escribirAcorde = []
 
 def polysimbolo(s, s2, compass_accidentals, compass_accidentals2):
     fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\t' + kern.simbolo(s2, clave2, tonalidad, compass_accidentals2) + '\n')

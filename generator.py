@@ -79,7 +79,7 @@ def scoreGenerator(ncompasses, nscores):
                             if simbolo[4] == 1:
                                 f1.write('c ')
                                 puntillo = simbolo[5]
-                                notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 1 o de 2 notas
+                                notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 2 o de 3 notas
                                 lastNota = False
                                 while notasAcorde>0:
                                     pitch2 = simbolo[2]
