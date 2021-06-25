@@ -246,7 +246,7 @@ def acorde(notas, clef):
 
     #si hay ligadura la escribimos o al principio o al final del acorde en función del número de plicas que haya hacia abajo
     if numPlicas>1 and (hayLigaduraInicio or hayLigaduraFin):
-        notaAbs = max(alturas)
+        notaAbs = min(alturas)
         pos = positions[notaAbs]
         if hayLigaduraInicio:
             slur = 'slur.start' + separator + pos
@@ -256,7 +256,7 @@ def acorde(notas, clef):
 
         res = slur + not_advance + res
     elif numPlicas<=1 and (hayLigaduraInicio or hayLigaduraFin):
-        notaAbs = min(alturas)
+        notaAbs = max(alturas)
         pos = positions[notaAbs]
         if hayLigaduraInicio:
             slur = 'slur.start' + separator + pos
@@ -275,8 +275,9 @@ def acorde(notas, clef):
                     res += puntillos[index]
                 else:
                     res += puntillos[index] + not_advance
+    else:
+        res += advance
 
-    
     #si hay alteraciones las escribimos
     #busco la nota más aguda que su alteración iria la ultima
     acc = ''
@@ -311,10 +312,8 @@ def acorde(notas, clef):
         alturas.pop(indice)
         alteraciones.pop(indice)
     if acc!='':
-        res += advance + acc + advance
-    else:
-        res += advance
-
+        res = acc + advance + res
+    
     return res
 
 def end():
