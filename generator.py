@@ -10,7 +10,7 @@ compass_accidentals2 = {}
 nc = input("Introduce el número de compases... ")  #Numero de compases
 numScores = input("Introduce el número de partituras... ") #numero de partituras
 typeagnostic = input("Introduce traducción agnótica standard(0) o split(1)...")
-monopoly = input("Indica si las partituras seran monofónicas(0) o polifónicas(1)...")
+monopoly = input("Indica si las partituras seran homofónicas(0) o música para piano(1)...")
 
 nc = int(nc)
 numScores= int(numScores)
@@ -71,7 +71,7 @@ def scoreGenerator(ncompasses, nscores):
                             
                             #generamos la nota o el silencio
                             simbolo = symbol.generateSymbol(clef, key, duration, tie, pitch, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA, ACORDE, ?PUNTILLO]
-                            print(simbolo)
+                            #print(simbolo)
                             pitch = simbolo[2]
                             tie = simbolo[3]
 
@@ -88,7 +88,6 @@ def scoreGenerator(ncompasses, nscores):
                                     manager.simbolo(simbolo[0], compass_accidentals, True)
                                     f1.write(simbolo[0] + ' ')
                                     simbolo = symbol.generateChord(clef, key, simbolo[1], pitch2, puntillo, tie, compass_accidentals, lastcompass, lastNota) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
-                                    print(simbolo)
                                     notasAcorde -= 1
                                     
                             #Escribimos el simbolo

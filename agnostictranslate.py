@@ -168,7 +168,7 @@ def simbolo(linea, clef):
         if '-' in x:
             acc = 'accidental.flat' + separator + pos
             res = acc + advance + res
-        if '-' in x:
+        if '+' in x:
             acc = 'accidental.natural' + separator + pos 
             res = acc + advance + res
 
@@ -183,15 +183,16 @@ def acorde(notas, clef):
     hayLigaduraFin=False
     alturas = []
     alteraciones = []
-    print('Notas del acorde:')
+    puntillos = []
+    print('Escribo el acorde:')
     print(notas)
-    for linea in notas:
-
+    res = ''
+    for index, linea in enumerate(notas):
         x = linea.split(" ")
         if x[0]!= '.':
-
+            
             #como es un acorde será siempre una nota
-            res = 'note.'
+            res += 'note.'
 
             #escribimos la duración
             res += durations[x[1]]
@@ -215,9 +216,10 @@ def acorde(notas, clef):
                     pos_dot = 'S' + pos[1:]
                 else:
                     pos_dot = pos
-                res += advance + 'dot' + separator + pos_dot
+                puntillos.append('dot' + separator + pos_dot)
 
-            res += not_advance
+            if index!=len(notas)-1:
+                res += not_advance
 
             #si hay ligadura indicamos si es el principio o el final de una
             if '(' in x:
@@ -232,7 +234,7 @@ def acorde(notas, clef):
             elif '-' in x:
                 alturas.append(notaAbs)
                 alteraciones.append('accidental.flat')
-            elif '-' in x:
+            elif '+' in x:
                 alturas.append(notaAbs)
                 alteraciones.append('accidental.natural')
             else:
@@ -243,7 +245,7 @@ def acorde(notas, clef):
             res = ''
 
     #si hay ligadura la escribimos o al principio o al final del acorde en función del número de plicas que haya hacia abajo
-    if numPlicas>1 and hayLigaduraInicio and hayLigaduraFin:
+    if numPlicas>1 and (hayLigaduraInicio or hayLigaduraFin):
         notaAbs = max(alturas)
         pos = positions[notaAbs]
         if hayLigaduraInicio:
@@ -253,7 +255,7 @@ def acorde(notas, clef):
             slur = 'slur.end' + separator + pos
 
         res = slur + not_advance + res
-    elif numPlicas<=1 and hayLigaduraInicio and hayLigaduraFin:
+    elif numPlicas<=1 and (hayLigaduraInicio or hayLigaduraFin):
         notaAbs = min(alturas)
         pos = positions[notaAbs]
         if hayLigaduraInicio:
@@ -264,20 +266,36 @@ def acorde(notas, clef):
 
         res += not_advance + slur
 
+    #si hay puntillos los escribimos
+    if len(puntillos)>0:
+        res += advance
+        for index in range(len(puntillos)):
+            if puntillos[index]!='':
+                if index == len(puntillos)-1:
+                    res += puntillos[index]
+                else:
+                    res += puntillos[index] + not_advance
+
+    
     #si hay alteraciones las escribimos
     #busco la nota más aguda que su alteración iria la ultima
     acc = ''
     notaAbs = min(alturas)
     indice = alturas.index(notaAbs)
     if(alteraciones[indice] != ''):
-        acc += alteraciones[indice] + separator + positions[notaAbs]
+        print('alteriacion aguda')
+        acc +=alteraciones[indice] + separator + positions[notaAbs]
     alturas.pop(indice)
     alteraciones.pop(indice)
     #busco la nota mas grave que será la siguiente a la aguda
     notaAbs = min(alturas)
     indice = alturas.index(notaAbs)
     if(alteraciones[indice] != ''):
-        acc = alteraciones[indice] + separator + positions[notaAbs] + acc
+        print('alteracion grave')
+        if acc!='':
+            acc = not_advance + alteraciones[indice] + separator + positions[notaAbs] + not_advance + acc
+        else:
+            acc += alteraciones[indice] + separator + positions[notaAbs]
     alturas.pop(indice)
     alteraciones.pop(indice)
     #si queda una nota mas en los acordes va la primera
@@ -285,9 +303,17 @@ def acorde(notas, clef):
         notaAbs = min(alturas)
         indice = alturas.index(notaAbs)
         if(alteraciones[indice] != ''):
-            acc = alteraciones[indice] + separator + positions[notaAbs] + acc
+            print('alteracion media')
+            if acc!='':
+                acc =  alteraciones[indice] + separator + positions[notaAbs] + not_advance + acc
+            else:
+                acc += alteraciones[indice] + separator + positions[notaAbs]
         alturas.pop(indice)
         alteraciones.pop(indice)
+    if acc!='':
+        res += advance + acc + advance
+    else:
+        res += advance
 
     return res
 

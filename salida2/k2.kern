@@ -1,52 +1,63 @@
 **kern
 *clefF4
 *k[]
-*M3/4
+*M4/4
 =1-
-4D
-(2D
+16C
+2C
+16D#
+4.C
 =2
-16C 16AA 16FF)
-4BB
-16BB
-(8C
-8C 8AA
-16BB 16GG)
-16C 16AA
+4D 4BB
+8.D
+8C
+8r
+16C 16AA 16FF
+(4BB
 =3
-8C
-2D- 2BB
-8C
+2BB)
+4.C
+8D
 =4
-4D
-2D#
-=5
-4E
-2r
-=6
-8F
-2G
-8A
-=7
-2B
-4B-
-=8
-4A
-(16B
-8c)
+(8D
+16D)
+4C
+16C
+8C
+16BB-
 4r
-(16B#
+16BB-
+=5
+16AA
+16BB
+2C
+8.BB 8.GG 8.EE
+16AA
+8BB
+=6
+2C
+8D
+4E 4C 4AA
+16D 16BB 16GG
+16C
+=7
+16D
+8C
+16C
+2.BB
+=8
+16C
+16C
+2D
+16D
+4C
+16BB
 =9
-4A)
-16B 16G
-16A-
-4A-
-16B
-16An
+16r
+16C
+2.r
+8C
 =10
-2G
-16F
-8G
-16G 16E 16C
+1r
 =11
 *-

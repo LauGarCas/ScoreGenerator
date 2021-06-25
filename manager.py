@@ -116,16 +116,13 @@ def simbolo(s, compass_accidentals, chord):
         fAgnostic.write(agnostic.advance)
 
     elif hayAcorde and chord: #estamos dentro de un acorde
-        print('dentro nota')
         escribirAcorde.append(s)
     
     elif not hayAcorde and chord: #es la primera nota del acorde
-        print('primera nota')
         hayAcorde=True
         escribirAcorde.append(s)
 
     elif hayAcorde and not chord: #es la ultima nota del acorde
-        print('ultima nota')
         hayAcorde=False
         escribirAcorde.append(s)
         fAgnostic.write(agnostic.acorde(escribirAcorde, clave))
