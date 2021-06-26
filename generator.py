@@ -148,11 +148,58 @@ def scoreGenerator(ncompasses, nscores):
                                 simbolo1 = symbol.generateSymbol(clef, key, duration1, tie1, pitch1, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
                                 simbolo2 = symbol.generateSymbol(clef2, key, duration2, tie2, pitch2, lastcompass, compass_accidentals2) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
                                 
-                                #Escribimos el simbolo
-                                manager.polysimbolo(simbolo1[0], simbolo2[0], compass_accidentals, compass_accidentals2)
+                                tie1 = simbolo1[3]
+                                tie2 = simbolo2[3]
+                                pitch1 = simbolo1[2]
+                                pitch2 = simbolo2[2]
 
-                                f1.write(simbolo1[0] + '\t' + simbolo2[0] + '\n')
-                           
+                                #no hay acorde en ninguno de los dos simbolos
+                                #Escribimos el simbolo
+                                if simbolo1[4] != 1 and simbolo2[4] != 1:
+                                    manager.polysimbolo(simbolo1[0], simbolo2[0], compass_accidentals, compass_accidentals2, False, False)
+                                    f1.write(simbolo1[0] + '\t' + simbolo2[0] + '\n')
+                                else:
+                                    #empieza un acorde
+                                    if simbolo1[4] == 1:
+                                        f1.write('c ')
+                                        puntillo = simbolo1[5]
+                                        notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 2 o de 3 notas
+                                        lastNota = False
+                                        while notasAcorde>0:
+                                            print('nota1 ' + simbolo1[0])
+                                            pitch12 = simbolo1[2]
+                                            if notasAcorde == 1:
+                                                lastNota = True
+                                            manager.polysimbolo(simbolo1[0], simbolo2[0], compass_accidentals, compass_accidentals2, True, False)
+                                            f1.write(simbolo1[0] + ' ')
+                                            simbolo1 = symbol.generateChord(clef, key, simbolo1[1], pitch12, puntillo, tie1, compass_accidentals, lastcompass, lastNota) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                            notasAcorde -= 1
+                                        f1.write(' \t')
+                                    else:
+                                        f1.write(simbolo1[0] + ' \t')
+
+                                    if simbolo2[4] == 1:
+                                        f1.write('c ')
+                                        puntillo = simbolo2[5]
+                                        notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 2 o de 3 notas
+                                        lastNota = False
+                                        while notasAcorde>0:
+                                            print('nota2 ' + simbolo2[0])
+                                            pitch22 = simbolo2[2]
+                                            if notasAcorde == 1:
+                                                lastNota = True
+                                            manager.polysimbolo(simbolo1[0], simbolo2[0], compass_accidentals, compass_accidentals2, False, True)
+                                            f1.write(simbolo2[0] + ' ')
+                                            simbolo2 = symbol.generateChord(clef2, key, simbolo2[1], pitch22, puntillo, tie2, compass_accidentals2, lastcompass, lastNota) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                            notasAcorde -= 1
+                                        f1.write('\n')
+                                    else:
+                                        f1.write(simbolo2[0] + '\n')
+
+                                    manager.polysimbolo(simbolo1[0], simbolo2[0], compass_accidentals, compass_accidentals2, False, False)
+                                    
+
+
                                 #actualizamos las duraciones
                                 duration1 = duration1 - simbolo1[1]
                                 duration2 = duration2 - simbolo2[1]
@@ -165,9 +212,30 @@ def scoreGenerator(ncompasses, nscores):
                                 if duration1<duration2: #El primer pentagrama va más adelantado
                                     simbolo2 = symbol.generateSymbol(clef2, key, duration2, tie2, pitch2, lastcompass, compass_accidentals2) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
                                     
-                                    #Escribimos el simbolo
-                                    manager.polysimbolo('.', simbolo2[0], '', compass_accidentals2)
-                                    f1.write('nada' + '\t' + simbolo2[0] + '\n')
+                                    tie2 = simbolo2[3]
+                                    pitch2 = simbolo2[2]
+
+                                    #empieza un acorde
+                                    if simbolo2[4] == 1:
+                                        f1.write('nada' + '\t' + 'c ')
+                                        puntillo = simbolo2[5]
+                                        notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 2 o de 3 notas
+                                        lastNota = False
+                                        while notasAcorde>0:
+                                            print('nota2 ' + simbolo2[0])
+                                            pitch22 = simbolo2[2]
+                                            if notasAcorde == 1:
+                                                lastNota = True
+                                            manager.polysimbolo('.', simbolo2[0], '', compass_accidentals2, False, True)
+                                            f1.write(simbolo2[0] + ' ')
+                                            simbolo2 = symbol.generateChord(clef2, key, simbolo2[1], pitch22, puntillo, tie2, compass_accidentals2, lastcompass, lastNota) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                            notasAcorde -= 1
+                                        f1.write('\n')
+                                    else:
+                                        #Escribimos el simbolo
+                                        f1.write('nada' + '\t' + simbolo2[0] + '\n')  
+                                    
+                                    manager.polysimbolo('.', simbolo2[0], '', compass_accidentals2, False, False)
                                     
                                     #Actualizamos las duraciones
                                     duration2 = duration2 - simbolo2[1]
@@ -178,10 +246,31 @@ def scoreGenerator(ncompasses, nscores):
                                 else: #El segundo pentagrama va mas adelantado
                                     simbolo1 = symbol.generateSymbol(clef, key, duration1, tie1, pitch1, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
                                     
-                                    #Escribimos el simbolo
-                                    f1.write(simbolo1[0] + '\t' + 'nada' + '\n')
-                                    manager.polysimbolo(simbolo1[0], '.', compass_accidentals, '')
-                                        
+                                    tie1 = simbolo1[3]
+                                    pitch1 = simbolo1[2]  
+
+                                    #empieza un acorde
+                                    if simbolo1[4] == 1:
+                                        f1.write('c ')
+                                        puntillo = simbolo1[5]
+                                        notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 2 o de 3 notas
+                                        lastNota = False
+                                        while notasAcorde>0:
+                                            print('nota1 ' + simbolo1[0])
+                                            pitch12 = simbolo1[2]
+                                            if notasAcorde == 1:
+                                                lastNota = True
+                                            manager.polysimbolo(simbolo1[0], '.', compass_accidentals, '', True, False)
+                                            f1.write(simbolo1[0] + ' ')
+                                            simbolo1 = symbol.generateChord(clef, key, simbolo1[1], pitch12, puntillo, tie1, compass_accidentals, lastcompass, lastNota) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
+                                            notasAcorde -= 1
+                                        f1.write('\t'+'nada'+'\n')
+                                    else:
+                                        #Escribimos el simbolo
+                                        f1.write(simbolo1[0] + '\t' + 'nada' + '\n')
+
+                                    manager.polysimbolo(simbolo1[0], '.', compass_accidentals, '', False, False)
+
                                     #actualizamos las duraciones
                                     duration1 = duration1 - simbolo1[1]
 

@@ -284,7 +284,7 @@ def acorde(notas, clef):
     notaAbs = min(alturas)
     indice = alturas.index(notaAbs)
     if(alteraciones[indice] != ''):
-        print('alteriacion aguda')
+        #print('alteracion aguda')
         acc +=alteraciones[indice] + separator + positions[notaAbs]
     alturas.pop(indice)
     alteraciones.pop(indice)
@@ -292,7 +292,7 @@ def acorde(notas, clef):
     notaAbs = min(alturas)
     indice = alturas.index(notaAbs)
     if(alteraciones[indice] != ''):
-        print('alteracion grave')
+        #print('alteracion grave')
         if acc!='':
             acc = not_advance + alteraciones[indice] + separator + positions[notaAbs] + not_advance + acc
         else:
@@ -304,7 +304,7 @@ def acorde(notas, clef):
         notaAbs = min(alturas)
         indice = alturas.index(notaAbs)
         if(alteraciones[indice] != ''):
-            print('alteracion media')
+            #print('alteracion media')
             if acc!='':
                 acc =  alteraciones[indice] + separator + positions[notaAbs] + not_advance + acc
             else:

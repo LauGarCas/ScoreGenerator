@@ -1,63 +1,88 @@
-**kern
-*clefF4
-*k[]
-*M4/4
-=1-
-16C
-2C
-16D#
-4.C
-=2
-4D 4BB
-8.D
-8C
-8r
-16C 16AA 16FF
-(4BB
-=3
-2BB)
-4.C
-8D
-=4
-(8D
-16D)
-4C
-16C
-8C
-16BB-
-4r
-16BB-
-=5
-16AA
-16BB
-2C
-8.BB 8.GG 8.EE
-16AA
-8BB
-=6
-2C
-8D
-4E 4C 4AA
-16D 16BB 16GG
-16C
-=7
-16D
-8C
-16C
-2.BB
-=8
-16C
-16C
-2D
-16D
-4C
-16BB
-=9
-16r
-16C
-2.r
-8C
-=10
-1r
-=11
-*-
+**kern	**kern
+*clefF4	*clefG2
+*k[]	*k[]
+*M3/4	*M3/4
+=1-	=1-
+(4BB	4a- 4f 4d
+2C)	4c
+.	16B
+.	16A
+.	16G
+.	16A
+=2	=2
+16C	16A
+8C	8A-
+8C	8r
+16BB-	8B
+8BB-	.
+.	4A- 4F 4eee
+16AA	.
+8AA 8FF 8DD	.
+16CC	16eee
+=3	=3
+2BBB	16eee
+.	16E
+.	4eee
+.	4E
+4BBB	.
+.	8E 8A# 8F
+=4	=4
+16AAA	16G
+8BBB	16A
+.	8B
+16BBB	.
+4r	2A
+16AAA	.
+16AAA-	.
+8AAA-	.
+=5	=5
+4AAA	2G
+8AAA	.
+16BBB	.
+4CC	.
+.	4F
+16DD	.
+=6	=6
+(8EE	16G-
+.	16G-
+8.DD)	16F
+.	2F
+4r	.
+16DD	.
+16CC	.
+16CC	16G- 16E
+=7	=7
+8BBB	16eee
+.	16E
+4BBB	4eee
+4CC	16eee
+.	(8eee
+.	16E)
+(8DD	8eee
+=8	=8
+8.CC)	4eee
+4CC	.
+.	4E
+(4DD	.
+.	8F 8eee 8E
+.	16eee
+16EE)	16eee 16E
+=9	=9
+2DD	16eee
+.	8r
+.	4E
+.	4eee
+4r	.
+.	16eee
+=10	=10
+16DD	4E
+16EE	.
+2FF	.
+.	16F
+.	16G
+.	8G
+.	8F
+8GG	16G-
+.	16A#
+=11	=11
+*-	*-
