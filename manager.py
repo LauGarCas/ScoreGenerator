@@ -1,10 +1,14 @@
 import os
 import kerntranslate as kern
 import agnostictranslate as agnostic
+import verovio
 
 def init(i, path, typeagnostic):
     nombrearchivokern = 'k' + str(i) +'.kern'
     global fKern 
+    global pathKern
+    verovio.setDefaultResourcePath(path)
+    pathKern = os.path.join(path, nombrearchivokern)
     fKern = open(os.path.join(path, nombrearchivokern), "w")
     fKern.write('**kern\n')
 
@@ -22,6 +26,9 @@ def init(i, path, typeagnostic):
 def polyinit(i, path, typeagnostic):
     nombrearchivokern = 'k' + str(i) +'.kern'
     global fKern 
+    global pathKern
+    verovio.setDefaultResourcePath(path)
+    pathKern = os.path.join(path, nombrearchivokern)
     fKern = open(os.path.join(path, nombrearchivokern), "w")
     fKern.write('**kern\t**kern\n')
 
@@ -203,11 +210,17 @@ def polysimbolo(s, s2, compass_accidentals, compass_accidentals2, chord1, chord2
         fAgnostic.write(agnostic.acorde(escribirAcorde, clave2))
         escribirAcorde = []
 
-
 def end(i):
     fKern.write('=' + str(i) + '\n' + '*-')
 
     fAgnostic.write(agnostic.end())
+
+    tk = verovio.toolkit()
+    tk.loadFile(pathKern)
+    tk.getPageCount()
+
+    tk.renderToSVGFile( "page.svg", 1 )
+
 
 def polyend(i, path):
     fKern.write('=' + str(i) + '\t' + '=' + str(i) + '\n' + '*-' + '\t' + '*-')
@@ -223,6 +236,11 @@ def polyend(i, path):
 
     os.remove(os.path.join(path, nombrearchivoagnostico1))
 
+    tk = verovio.toolkit()
+    tk.loadFile(pathKern)
+    tk.getPageCount()
+
+    tk.renderToSVGFile( "page.svg", 1 )
 
 def close():
     fKern.close()
