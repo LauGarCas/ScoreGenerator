@@ -17,7 +17,7 @@ def valueSeparator(typeagnostic):
 
 '''
 ###############
-NOTAS
+POSICIONES
 ###############
 '''
 positions = ["S-3", "L-2", "S-2", "L-1", "S-1", "L0", "S0", "L1", "S1", "L2", "S2", "L3", "S3", "L4", "S4", "L5", "S5", "L6", "S6", "L7", "S7", "L8"]

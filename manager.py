@@ -1,13 +1,19 @@
+import sys
+sys.path.append("c:/users/lauga/appdata/local/packages/pythonsoftwarefoundation.python.3.9_qbz5n2kfra8p0/localcache/local-packages/python39/site-packages")
 import os
 import kerntranslate as kern
 import agnostictranslate as agnostic
 import verovio
+import cairosvg
 
 def init(i, path, typeagnostic):
-    nombrearchivokern = 'k' + str(i) +'.kern'
+    nombrearchivokern = 'k' + str(i) +'.krn'
     global fKern 
     global pathKern
-    verovio.setDefaultResourcePath(path)
+    global pathImage
+
+    pathImage = os.path.join(path, "score" + str(i) + ".png")
+    #verovio.setDefaultResourcePath(path)
     pathKern = os.path.join(path, nombrearchivokern)
     fKern = open(os.path.join(path, nombrearchivokern), "w")
     fKern.write('**kern\n')
@@ -215,12 +221,6 @@ def end(i):
 
     fAgnostic.write(agnostic.end())
 
-    tk = verovio.toolkit()
-    tk.loadFile(pathKern)
-    tk.getPageCount()
-
-    tk.renderToSVGFile( "page.svg", 1 )
-
 
 def polyend(i, path):
     fKern.write('=' + str(i) + '\t' + '=' + str(i) + '\n' + '*-' + '\t' + '*-')
@@ -236,12 +236,16 @@ def polyend(i, path):
 
     os.remove(os.path.join(path, nombrearchivoagnostico1))
 
+    
+
+def close():
+    fKern.close()
+    fAgnostic.close()
     tk = verovio.toolkit()
     tk.loadFile(pathKern)
     tk.getPageCount()
 
     tk.renderToSVGFile( "page.svg", 1 )
-
-def close():
-    fKern.close()
-    fAgnostic.close()
+    cairosvg.svg2png(url="page.svg", write_to=pathImage)
+    os.remove("page.svg")
+   

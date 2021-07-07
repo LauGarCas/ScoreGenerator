@@ -4,6 +4,7 @@ import symbol
 import dictionary
 import manager
 
+
 compass_accidentals = {}
 compass_accidentals2 = {}
 
