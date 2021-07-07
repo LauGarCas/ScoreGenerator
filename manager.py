@@ -4,16 +4,16 @@ import os
 import kerntranslate as kern
 import agnostictranslate as agnostic
 import verovio
-import cairosvg
+from wand.image import Image
 
 def init(i, path, typeagnostic):
     nombrearchivokern = 'k' + str(i) +'.krn'
     global fKern 
     global pathKern
-    global pathImage
+    global pathImageJPG
 
-    pathImage = os.path.join(path, "score" + str(i) + ".png")
-    #verovio.setDefaultResourcePath(path)
+    pathImageJPG = os.path.join(path, "score" + str(i) + ".jpg")
+
     pathKern = os.path.join(path, nombrearchivokern)
     fKern = open(os.path.join(path, nombrearchivokern), "w")
     fKern.write('**kern\n')
@@ -33,7 +33,11 @@ def polyinit(i, path, typeagnostic):
     nombrearchivokern = 'k' + str(i) +'.kern'
     global fKern 
     global pathKern
-    verovio.setDefaultResourcePath(path)
+
+    global pathImageJPG
+
+    pathImageJPG = os.path.join(path, "score" + str(i) + ".jpg")
+
     pathKern = os.path.join(path, nombrearchivokern)
     fKern = open(os.path.join(path, nombrearchivokern), "w")
     fKern.write('**kern\t**kern\n')
@@ -245,7 +249,9 @@ def close():
     tk.loadFile(pathKern)
     tk.getPageCount()
 
-    tk.renderToSVGFile( "page.svg", 1 )
-    cairosvg.svg2png(url="page.svg", write_to=pathImage)
+    tk.renderToSVGFile("page.svg", 1)
+    with Image(filename='page.svg') as image:
+        image.save(filename=pathImageJPG)
+
     os.remove("page.svg")
    
