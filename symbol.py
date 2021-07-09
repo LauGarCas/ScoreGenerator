@@ -185,28 +185,34 @@ def generateChord(clef, key, duration, pitch, dot, tie, compass_accidentals, las
 def randomWalk(prevpitch):
     paso = random.choice([0, 1, 2]) #el 0 resta 1, el 1 lo deja como esta y el 2 le suma 1
     limite = random.choice([0, 1]) #0 limite absorbente, 1 limite reflectivo
+    print('random')
 
     if paso == 0:
         pitch = int(prevpitch) - 1
         if pitch<0 and limite==0:
+            print('tipo1')
             pitch = 0
         if pitch<0 and limite==1:
+            print('tipo2')
             pitch += 2
     elif paso == 1:
         pitch = int(prevpitch)
     else:
         pitch = int(prevpitch) + 1
         if pitch>21 and limite==0:
+            print('tipo3')
             pitch = 21
         if pitch>21 and limite==1:
+            print('tipo4')
             pitch -= 2
 
+    print(pitch)
     return pitch
 
-    
-
+ 
 def alturaAcorde(chordpitch, lastnote):
-    #se restan dos alturas de la altura anterior, excepto si no caben que se hacen cosas raras que en mi cabeza tienen sentido
+    print('acorde')
+    
     if lastnote:
         if chordpitch<2:
             if chordpitch<1:
@@ -220,5 +226,5 @@ def alturaAcorde(chordpitch, lastnote):
             pitch = chordpitch + 3
         else:
             pitch = chordpitch -2
-
+    print(pitch)
     return pitch

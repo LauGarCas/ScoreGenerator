@@ -30,7 +30,7 @@ def init(i, path, typeagnostic):
     escribirAcorde = []
 
 def polyinit(i, path, typeagnostic):
-    nombrearchivokern = 'k' + str(i) +'.kern'
+    nombrearchivokern = 'k' + str(i) +'.krn'
     global fKern 
     global pathKern
 
@@ -170,13 +170,11 @@ def polysimbolo(s, s2, compass_accidentals, compass_accidentals2, chord1, chord2
         escribirAcorde.append(s)
     
     elif not hayAcorde1 and chord1: #es la primera nota del acorde en el compás1
-        print('es la primera nota del acorde en el compás1')
         hayAcorde1=True
         fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + ' ')
         escribirAcorde.append(s)
 
     elif hayAcorde1 and not chord1 and not chord2: #es la ultima nota del acorde en el compás1 y no hay acorde en el compas2
-        print('es la ultima nota del acorde en el compás1 y no hay acorde en el compas2')
         hayAcorde1=False
         fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\t' + kern.simbolo(s2, clave2, tonalidad, compass_accidentals2) + '\n')       
         escribirAcorde.append(s)
@@ -190,7 +188,6 @@ def polysimbolo(s, s2, compass_accidentals, compass_accidentals2, chord1, chord2
     elif hayAcorde1 and not chord1 and chord2: #es la ultima nota del acorde en el compás1 pero empieza un acorde en el compas2
         hayAcorde1 = False
         hayAcorde2 = True
-        print('es la ultima nota del acorde en el compás1 pero empieza un acorde en el compas2')
         fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\t' + kern.simbolo(s2, clave2, tonalidad, compass_accidentals2) + ' ')
         escribirAcorde.append(s)
         fAgnostic.write(agnostic.acorde(escribirAcorde, clave))
@@ -198,7 +195,6 @@ def polysimbolo(s, s2, compass_accidentals, compass_accidentals2, chord1, chord2
         escribirAcorde.append(s2)
 
     elif not hayAcorde2 and chord2: #es la primera nota del acorde en el compás2 y no habia acorde en el compas1
-        print('es la primera nota del acorde en el compás2 y no habia acorde en el compas1')
         hayAcorde2=True
         fKern.write(kern.simbolo(s, clave, tonalidad, compass_accidentals) + '\t' + kern.simbolo(s2, clave2, tonalidad, compass_accidentals2) + ' ')
         res = agnostic.simbolo(s, clave)
@@ -208,12 +204,10 @@ def polysimbolo(s, s2, compass_accidentals, compass_accidentals2, chord1, chord2
         escribirAcorde.append(s2)
     
     elif hayAcorde2 and chord2: #estamos dentro de un acorde en el compás2
-        print('estamos dentro de un acorde en el compás2')
         fKern.write(kern.simbolo(s2, clave2, tonalidad, compass_accidentals2) + ' ')
         escribirAcorde.append(s2)
 
     elif hayAcorde2 and not chord2: #es la ultima nota del acorde en el compás2
-        print('es la ultima nota del acorde en el compás2')
         hayAcorde2=False
         fKern.write(kern.simbolo(s2, clave2, tonalidad, compass_accidentals2) + '\n')
         escribirAcorde.append(s2)

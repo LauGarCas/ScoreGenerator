@@ -1,0 +1,27 @@
+clefF4
+fM
+M2/2
+compas 0
+n 0.25 11 
+n 0.5 12 
+c n 0.5 11  n 0.5 9 
+r 2 
+n 0.5 10 
+n 0.25 9 
+compas 1
+n 0.25 9 
+n 0.5 8 
+n 0.5 7 
+r 2 
+n 0.5 8 
+n 0.25 9 
+compas 2
+n 2 10 
+c n 2 9  n 2 7 
+compas 3
+n 0.5 10 #
+n 1 9 
+n 2 8 
+c n 0.5 7  n 0.5 5 
+compas 4
+n 4 7 -

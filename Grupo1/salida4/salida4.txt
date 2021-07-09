@@ -1,0 +1,21 @@
+clefG2
+aM
+M5/4
+compas 0
+n 4 12 
+n 0.5 12  (
+n 0.5 12 # )
+compas 1
+n 4 13 
+n 1 12 
+compas 2
+n 0.5 13 
+n 0.5 13 
+n 4 14 
+compas 3
+n 1 13  (
+c n 4 13  n 4 11  n 4 9  )
+compas 4
+n 0.5 14 
+r 4 
+c n 0.5 14  n 0.5 12  n 0.5 10 -

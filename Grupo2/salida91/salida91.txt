@@ -1,0 +1,29 @@
+clefG2
+dM
+M4/4
+compas 0
+n 0.5 11 
+n 0.25 12 
+n 2 11  (
+n 1 10 
+n 0.25 9 + )
+compas 1
+n 4 10 
+compas 2
+n 0.5 9 - (
+n 0.25 9  )
+n 0.5 9 
+n 1 8 
+n 0.25 8 
+n 1 7 
+n 0.5 7 
+compas 3
+n 1 6 
+n 1 7 
+n 0.5 7  (
+n 0.25 7  )
+n 1 8 
+n 0.25 8 
+compas 4
+n 2 8 
+c n 2 8  n 2 6 

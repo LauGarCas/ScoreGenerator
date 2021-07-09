@@ -51,7 +51,7 @@ def scoreGenerator(ncompasses, nscores):
 
                     #inicializamos la ligadura y la altura
                     tie = 0
-                    pitch = 11 #número entre el 1 y el 22 -> lo podría cambiar por un random
+                    pitch = 11
                     #se empiezan a generar compases
                     for i in range(ncompasses):
                         lastcompass = False
@@ -72,7 +72,6 @@ def scoreGenerator(ncompasses, nscores):
                             
                             #generamos la nota o el silencio
                             simbolo = symbol.generateSymbol(clef, key, duration, tie, pitch, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA, ACORDE, ?PUNTILLO]
-                            #print(simbolo)
                             pitch = simbolo[2]
                             tie = simbolo[3]
 
@@ -105,7 +104,7 @@ def scoreGenerator(ncompasses, nscores):
                         compass_accidentals.clear()
                     #fin de los archivos
                     manager.end(ncompasses+1)
-                elif monopoly == '1': #POLYPHONIC
+                elif monopoly == '1': #PIANO
                     #creo los archivos de salida
                     manager.polyinit(j, path, typeagnostic)
                     #se decide el tipo de clave a utilizar
@@ -127,10 +126,11 @@ def scoreGenerator(ncompasses, nscores):
                     #inicializamos la ligadura y la altura
                     tie1 = 0
                     tie2 = 0
-                    pitch1 = 11 #número entre el 1 y el 22 -> lo podría cambiar por un random
-                    pitch2 = 11 #número entre el 1 y el 22 -> lo podría cambiar por un random
+                    pitch1 = 11
+                    pitch2 = 11
                     #se empiezan a generar compases
                     for i in range(ncompasses):
+                        print('compas nuevo')
                         lastcompass = False
                         if i == ncompasses - 1:
                             lastcompass = True
@@ -167,7 +167,6 @@ def scoreGenerator(ncompasses, nscores):
                                         notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 2 o de 3 notas
                                         lastNota = False
                                         while notasAcorde>0:
-                                            print('nota1 ' + simbolo1[0])
                                             pitch12 = simbolo1[2]
                                             if notasAcorde == 1:
                                                 lastNota = True
@@ -185,7 +184,6 @@ def scoreGenerator(ncompasses, nscores):
                                         notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 2 o de 3 notas
                                         lastNota = False
                                         while notasAcorde>0:
-                                            print('nota2 ' + simbolo2[0])
                                             pitch22 = simbolo2[2]
                                             if notasAcorde == 1:
                                                 lastNota = True
@@ -207,8 +205,8 @@ def scoreGenerator(ncompasses, nscores):
                                                         
                                 tie1 = simbolo1[3]
                                 tie2 = simbolo2[3]
-                                pitch1 = simbolo1[2]
-                                pitch2 = simbolo2[2]
+                                #pitch1 = simbolo1[2]
+                                #pitch2 = simbolo2[2]
                             else: #uno de los dos pentagramas va mas adelantado que el otro
                                 if duration1<duration2: #El primer pentagrama va más adelantado
                                     simbolo2 = symbol.generateSymbol(clef2, key, duration2, tie2, pitch2, lastcompass, compass_accidentals2) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
@@ -223,7 +221,6 @@ def scoreGenerator(ncompasses, nscores):
                                         notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 2 o de 3 notas
                                         lastNota = False
                                         while notasAcorde>0:
-                                            print('nota2 ' + simbolo2[0])
                                             pitch22 = simbolo2[2]
                                             if notasAcorde == 1:
                                                 lastNota = True
@@ -242,7 +239,7 @@ def scoreGenerator(ncompasses, nscores):
                                     duration2 = duration2 - simbolo2[1]
 
                                     tie2 = simbolo2[3]
-                                    pitch2 = simbolo2[2]
+                                    #pitch2 = simbolo2[2]
                                     
                                 else: #El segundo pentagrama va mas adelantado
                                     simbolo1 = symbol.generateSymbol(clef, key, duration1, tie1, pitch1, lastcompass, compass_accidentals) #SALIDA -> [LO QUE SE ESCRIBE, DURACION, ALTURA, LIGADURA]
@@ -257,7 +254,6 @@ def scoreGenerator(ncompasses, nscores):
                                         notasAcorde = random.choice([1, 2]) #elegimos si el acorde va a ser de 2 o de 3 notas
                                         lastNota = False
                                         while notasAcorde>0:
-                                            print('nota1 ' + simbolo1[0])
                                             pitch12 = simbolo1[2]
                                             if notasAcorde == 1:
                                                 lastNota = True
@@ -276,7 +272,7 @@ def scoreGenerator(ncompasses, nscores):
                                     duration1 = duration1 - simbolo1[1]
 
                                     tie1 = simbolo1[3]
-                                    pitch1 = simbolo1[2]                             
+                                    #pitch1 = simbolo1[2]                             
                         
                         #cuando se acaba el compás borramos el diccionario temporal de alteraciones
                         compass_accidentals.clear()

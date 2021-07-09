@@ -1,0 +1,45 @@
+**kern	**kern
+*clefF4	*clefG2
+*k[]	*k[]
+*M3/4	*M3/4
+=1-	=1-
+8BB	2a
+4BB	.
+8C	.
+8C 8AA	8b
+16GG	16b
+16FF	16b
+=2	=2
+2FF	16a 16f
+.	8r
+.	16e
+.	4d
+4FF	4d
+=3	=3
+8EE	16c
+.	2c
+16FF	.
+16r	.
+16FF 16DD	.
+8DD-	.
+8.CC	.
+.	8r
+16DD- 16BBB	.
+16CC	16B-
+=4	=4
+2CC	8B
+.	2c
+16CC 16AAA	.
+8AAA	.
+.	8r
+16BBB	.
+=5	=5
+8CC	2r
+4BBB	.
+8AAA	.
+16BBB	8c
+8AAA	.
+.	16B
+16GGG	16B
+=6	=6
+*-	*-

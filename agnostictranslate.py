@@ -184,8 +184,6 @@ def acorde(notas, clef):
     alturas = []
     alteraciones = []
     puntillos = []
-    print('Escribo el acorde:')
-    print(notas)
     res = ''
     for index, linea in enumerate(notas):
         x = linea.split(" ")
@@ -284,7 +282,6 @@ def acorde(notas, clef):
     notaAbs = min(alturas)
     indice = alturas.index(notaAbs)
     if(alteraciones[indice] != ''):
-        #print('alteracion aguda')
         acc +=alteraciones[indice] + separator + positions[notaAbs]
     alturas.pop(indice)
     alteraciones.pop(indice)
@@ -292,7 +289,6 @@ def acorde(notas, clef):
     notaAbs = min(alturas)
     indice = alturas.index(notaAbs)
     if(alteraciones[indice] != ''):
-        #print('alteracion grave')
         if acc!='':
             acc = not_advance + alteraciones[indice] + separator + positions[notaAbs] + not_advance + acc
         else:
@@ -304,7 +300,6 @@ def acorde(notas, clef):
         notaAbs = min(alturas)
         indice = alturas.index(notaAbs)
         if(alteraciones[indice] != ''):
-            #print('alteracion media')
             if acc!='':
                 acc =  alteraciones[indice] + separator + positions[notaAbs] + not_advance + acc
             else:

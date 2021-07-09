@@ -89,7 +89,7 @@ def simbolo(linea, clef, key, compass_accidentals):
 
         #traducimos la altura de la nota o el silencio
         if x[0] == 'n':
-            notaAbs = dictionary.pitches[clef][int(x[2])-1]
+            notaAbs = dictionary.pitches[clef][int(x[2])]
             if int(notaAbs[1]) < 4:
                 for i in range(4 - int(notaAbs[1])):
                     res += notaAbs[0]

@@ -1,0 +1,32 @@
+clefF4	clefG2
+fM	fM
+M4/4	M4/4
+compas 0	compas 0
+r 4  	c n 4 10  n 4 8  
+compas 1	compas 1
+n 4 10 	n 0.25 11 
+nada	n 2 10 -
+nada	n 1 9 
+nada	n 0.5 8  .
+compas 2	compas 2
+n 4 11 	r 0.25 
+nada	r 0.5 
+nada	c n 1 7 # 
+nada	n 0.25 7 
+nada	c n 0.25 6  
+nada	n 1 7  . (
+nada	n 0.25 8  )
+compas 3	compas 3
+n 1 10  .	n 0.5 9 -
+nada	n 0.25 8 
+nada	n 1 7 
+n 2 9 	nada
+nada	n 2 8 
+n 0.25 8 	nada
+n 0.25 9 	r 0.25 
+compas 4	compas 4
+n 1 9 	n 4 8 
+n 0.25 9 	nada
+n 2 9 	nada
+c n 0.25 10  	nada
+n 0.5 10 	nada

@@ -1,0 +1,24 @@
+clefC4
+cM
+M4/4
+compas 0
+r 2 
+c n 2 11  n 2 9  n 2 7 
+compas 1
+c n 4 12  n 4 10  n 4 8 
+compas 2
+n 0.25 13 
+n 0.25 14 
+c n 1 14  n 1 12 
+n 1 15 
+n 1 14 
+n 0.5 13 
+compas 3
+n 2 12 
+n 0.25 13 
+n 1 14 
+n 0.5 15  . (
+compas 4
+n 1 14  . )
+n 2 13 
+n 0.5 14 
