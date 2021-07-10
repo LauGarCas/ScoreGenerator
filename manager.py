@@ -12,7 +12,7 @@ def init(i, path, typeagnostic):
     global pathKern
     global pathImageJPG
 
-    pathImageJPG = os.path.join(path, "score" + str(i) + ".png")
+    pathImageJPG = os.path.join(path, "score" + str(i) + ".jpg")
 
     pathKern = os.path.join(path, nombrearchivokern)
     fKern = open(os.path.join(path, nombrearchivokern), "w")
@@ -36,7 +36,7 @@ def polyinit(i, path, typeagnostic):
 
     global pathImageJPG
 
-    pathImageJPG = os.path.join(path, "score" + str(i) + ".png")
+    pathImageJPG = os.path.join(path, "score" + str(i) + ".jpg")
 
     pathKern = os.path.join(path, nombrearchivokern)
     fKern = open(os.path.join(path, nombrearchivokern), "w")
